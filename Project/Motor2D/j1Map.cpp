@@ -46,6 +46,21 @@ void j1Map::Draw()
 
 	// TODO 9: Complete the draw function
 
+	//Layer* layer = data.layers.start->data; // for now we just use the first layer and tileset
+	//TileSet* tileset = data.tilesets.start->data;
+
+	//if (map_loaded == false)
+	//	return;
+
+	//for (int y = 0; y < data.height; y++)
+	//{
+	//	for (int x = 0; x < data.width; x++)
+	//	{
+	//		uint idtile = data.layers[0]->Get(x, y);
+	//		App->render->Blit(tileset->texture, GetPos(x, y).x, GetPos(x, y).y, &tileset->GetRect(idtile));
+	//	}
+	//}
+
 }
 
 
