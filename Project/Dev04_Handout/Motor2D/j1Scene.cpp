@@ -64,10 +64,19 @@ bool j1Scene::Update(float dt)
 	//App->render->Blit(img, 0, 0);
 	App->map->Draw();
 
-	p2SString title("Map:%dx%d Tiles:%dx%d Tilesets:%d",
-					App->map->data.width, App->map->data.height,
-					App->map->data.tile_width, App->map->data.tile_height,
-					App->map->data.tilesets.count());
+	int x;
+	int y;
+	App->input->GetMousePosition(x, y);
+
+	p2SString title("Map:%dx%d Tiles:%dx%d Tilesets:%d MousePos: %d, %d MouseTile: %d, %d",
+		App->map->data.width, App->map->data.height,
+		App->map->data.tile_width, App->map->data.tile_height,
+		App->map->data.tilesets.count(),
+		x,
+		y,
+		x / App->map->data.tile_width,
+		y / App->map->data.tile_height);
+		            
 
 	App->win->SetTitle(title.GetString());
 	return true;
