@@ -18,6 +18,14 @@
     <fullscreen_window value="false"/>
   </window>
 
+  <player>
+    <acceleration x="1" y="1"/>
+    <jumpSpeed x="0" y="-26"/>
+
+    <maxSpeed x="360" y="30"/>
+    <offPath x="11" y="9"/>
+  </player>
+  
   <file_system>
     <path>data.zip</path>
   </file_system>

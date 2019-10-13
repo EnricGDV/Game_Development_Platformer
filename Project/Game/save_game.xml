@@ -5,5 +5,11 @@
   <renderer>
     <camera x="100" y="0"/>
   </renderer>
+  <player>
+    <position x="6151" y="632" />
+    <speed x="0" y="0" />
+    <collider width="32" height="63" x="6162" y="641" />
+    <onFloor value="true" />
+  </player>
 
 </game_state>
