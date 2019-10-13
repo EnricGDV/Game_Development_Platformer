@@ -30,7 +30,7 @@ bool j1Scene::Awake()
 // Called before the first frame
 bool j1Scene::Start()
 {
-	App->map->Load("map2.tmx");
+	App->map->Load("map1.tmx");
 	//App->map->Load("iso.tmx");
 	
 	return true;

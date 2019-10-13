@@ -279,27 +279,18 @@ void j1Player::RestartPlayer()
 	//Escribir valores iniciales del mundo
 }
 
-bool j1Player::PositionCameraOnPlayer()
-{
-	App->render->camera.x = position.x - App->render->camera.w / 3;
-	if (App->render->camera.x < 0)App->render->camera.x = 0;
-	App->render->camera.y = position.y - App->render->camera.h / 2;
-	if (App->render->camera.y + App->win->height > App->map->data.height*App->map->data.tile_height)App->render->camera.y = App->map->data.height*App->map->data.tile_height - App->win->height;
-	return true;
-}
-
-void j1Player::BecomeGrounded()
-{
-	if (isJumping)
-	{
-		isJumping = false;
-		maxSpeed.x -= jumpForce.x;
-	}
-
-	if (Current_Animation == &falling)
-		AddSFX(5, 0);
-
-	canDash = true;
-	grounded = true;
-	jumping_up.Reset();
-}
+//void j1Player::BecomeGrounded()
+//{
+//	if (isJumping)
+//	{
+//		isJumping = false;
+//		maxSpeed.x -= jumpForce.x;
+//	}
+//
+//	if (Current_Animation == &falling)
+//		AddSFX(5, 0);
+//
+//	canDash = true;
+//	grounded = true;
+//	jumping_up.Reset();
+//}
