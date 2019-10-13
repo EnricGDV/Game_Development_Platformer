@@ -35,11 +35,11 @@ void j1Map::Draw()
 	 // for now we just use the first layer and tileset
 	
 
-	for (int i = 0; i < 4; i++)
+	for (int i = 0; i < data.layers.count(); i++)
 	{
 		MapLayer* layer = data.layers[i];
 
-		for (int j = 0; j < 2; j++)
+		for (int j = 0; j < data.tilesets.count(); j++)
 		{
 			TileSet* tileset = data.tilesets[j];
 
