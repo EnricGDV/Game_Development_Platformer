@@ -32,18 +32,28 @@ void j1Map::Draw()
 		return;
 
 	// TODO 5(old): Prepare the loop to draw all tilesets + Blit
-	MapLayer* layer = data.layers.start->data; // for now we just use the first layer and tileset
-	TileSet* tileset = data.tilesets.start->data;
-
+	 // for now we just use the first layer and tileset
 	
-	for (int y = 0; y < data.height; y++)
+
+	for (int i = 0; i < 4; i++)
 	{
-		for (int x = 0; x < data.width; x++)
+		MapLayer* layer = data.layers[i];
+
+		for (int j = 0; j < 2; j++)
 		{
-			uint idtile = data.layers[0]->Get(x, y);
-			App->render->Blit(tileset->texture, MapToWorld(x, y).x, MapToWorld(x, y).y, &tileset->GetTileRect(idtile));
+			TileSet* tileset = data.tilesets[j];
+
+			for (int y = 0; y < data.height; y++)
+			{
+				for (int x = 0; x < data.width; x++)
+				{
+					uint idtile = layer->Get(x, y);
+					App->render->Blit(tileset->texture, MapToWorld(x, y).x, MapToWorld(x, y).y, &tileset->GetTileRect(idtile));
+				}
+			}
 		}
 	}
+	
 	// TODO 10(old): Complete the draw function
 }
 
