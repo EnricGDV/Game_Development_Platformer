@@ -31,7 +31,7 @@ struct PlayerData
 	iPoint				speed;
 	iPoint				position;
 	iPoint				offPath;
-	SDL_Rect			collider;
+	Collider*			collider;
 	SDL_Texture*		PlayerTexture;
 
 
@@ -83,6 +83,8 @@ public:
 	void ArrivesFloor();
 
 	void PlayerMov();
+
+	void OnCollision(Collider* c1, Collider* c2);
 
 private:
 

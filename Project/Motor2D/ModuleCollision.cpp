@@ -92,7 +92,7 @@ bool ModuleCollision::PreUpdate()
 }
 
 // Called before render is available
-bool ModuleCollision::Update()
+bool ModuleCollision::Update(float dt)
 {
 
 	DebugDraw();

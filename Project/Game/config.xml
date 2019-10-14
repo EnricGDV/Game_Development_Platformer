@@ -21,7 +21,8 @@
   <player>
     <acceleration x="1" y="-1"/>
     <jumpSpeed x="0" y="-26"/>
-
+    <initPos x ="10" y="50"/>
+    <col w="10" h="32"/>
     <maxSpeed x="360" y="30"/>
     <offPath x="11" y="9"/>
   </player>

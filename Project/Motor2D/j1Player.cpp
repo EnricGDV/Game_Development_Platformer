@@ -9,6 +9,7 @@
 #include "j1Scene.h"
 #include "j1Audio.h"
 #include "j1Render.h"
+#include "ModuleCollision.h"
 
 j1Player::j1Player() : j1Module()
 {
@@ -39,6 +40,9 @@ bool j1Player::Awake(pugi::xml_node& config)
 
 	Player.offPath.x = config.child("offPath").attribute("x").as_int();
 	Player.offPath.y = config.child("offPath").attribute("y").as_int();
+
+
+	Player.collider = App->collision->AddCollider({ config.child("initPos").attribute("x").as_int(), config.child("initPos").attribute("y").as_int(), config.child("col").attribute("w").as_int(), config.child("col").attribute("h").as_int() }, COLLIDER_PLAYER, this);
 
 	return ret;
 }
@@ -128,10 +132,10 @@ bool j1Player::Load(pugi::xml_node& data)
 	Player.position.y = data.child("position").attribute("y").as_int();
 	Player.speed.x = data.child("speed").attribute("x").as_int();
 	Player.speed.y = data.child("speed").attribute("y").as_int();
-	Player.collider.w = data.child("collider").attribute("width").as_int();
-	Player.collider.h = data.child("collider").attribute("height").as_int();
-	Player.collider.x = data.child("collider").attribute("x").as_int();
-	Player.collider.y = data.child("collider").attribute("y").as_int();
+	Player.collider->rect.w = data.child("collider").attribute("width").as_int();
+	Player.collider->rect.h = data.child("collider").attribute("height").as_int();
+	Player.collider->rect.x = data.child("collider").attribute("x").as_int();
+	Player.collider->rect.y = data.child("collider").attribute("y").as_int();
 	Player.onFloor = data.child("onFloor").attribute("value").as_bool();
 
 	return true;
@@ -145,10 +149,10 @@ bool j1Player::Save(pugi::xml_node& data) const
 	data.child("position").append_attribute("y") = Player.position.y;
 	data.append_child("speed").append_attribute("x") = Player.speed.x;
 	data.child("speed").append_attribute("y") = Player.speed.y;
-	data.append_child("collider").append_attribute("width") = Player.collider.w;
-	data.child("collider").append_attribute("height") = Player.collider.h;
-	data.child("collider").append_attribute("x") = Player.collider.x;
-	data.child("collider").append_attribute("y") = Player.collider.y;
+	data.append_child("collider").append_attribute("width") = Player.collider->rect.w;
+	data.child("collider").append_attribute("height") = Player.collider->rect.h;
+	data.child("collider").append_attribute("x") = Player.collider->rect.x;
+	data.child("collider").append_attribute("y") = Player.collider->rect.y;
 	data.append_child("onFloor").append_attribute("value") = Player.onFloor;
 
 	return true;
@@ -238,8 +242,7 @@ void j1Player::PlayerMov()
 {
 	Player.position += Player.speed;
 
-	Player.collider.x = Player.position.x + Player.offPath.x;
-	Player.collider.y = Player.position.y + Player.offPath.y;
+	Player.collider->SetPos(Player.position.x + Player.offPath.x, Player.position.y + Player.offPath.y);
 }
 
 void j1Player::Draw()
@@ -294,3 +297,11 @@ void j1Player::RestartPlayer()
 //	grounded = true;
 //	jumping_up.Reset();
 //}
+
+void j1Player::OnCollision(Collider* c1, Collider* c2)
+{
+	if (c1->type == COLLIDER_PLAYER && c2->type == COLLIDER_WALL)
+		{
+
+		}
+}

@@ -49,8 +49,8 @@ public:
 	~ModuleCollision();
 
 	bool PreUpdate();
-	bool Update();
-	//update_status PostUpdate();
+	bool Update(float dt);
+	//bool PostUpdate();
 	bool CleanUp();
 
 	Collider* AddCollider(SDL_Rect rect, COLLIDER_TYPE type, j1Module* callback = nullptr);
