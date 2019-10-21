@@ -31,6 +31,21 @@ struct MapLayer
 };
 
 // ----------------------------------------------------
+struct MapObjectG
+{
+	p2SString	name;
+	p2List<SDL_Rect*>   objects;
+
+	MapObjectG() : objects(NULL)
+	{}
+
+	~MapObjectG()
+	{
+		RELEASE(objects);
+	}
+};
+
+// ----------------------------------------------------
 struct TileSet
 {
 	SDL_Rect GetTileRect(int id) const;
@@ -68,6 +83,7 @@ struct MapData
 	MapTypes			type;
 	p2List<TileSet*>	tilesets;
 	p2List<MapLayer*>	layers;
+	p2List<MapObjectG*> object_groups;
 };
 
 // ----------------------------------------------------
@@ -85,6 +101,7 @@ public:
 
 	// Called each loop iteration
 	void Draw();
+	void DrawObjects();
 
 	// Called before quitting
 	bool CleanUp();
@@ -103,6 +120,7 @@ private:
 	bool LoadTilesetDetails(pugi::xml_node& tileset_node, TileSet* set);
 	bool LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set);
 	bool LoadLayer(pugi::xml_node& node, MapLayer* layer);
+	bool LoadObjectGroup(pugi::xml_node& node, MapObjectG* objectg);
 
 public:
 

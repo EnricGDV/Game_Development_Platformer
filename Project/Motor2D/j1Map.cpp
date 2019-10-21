@@ -4,6 +4,7 @@
 #include "j1Render.h"
 #include "j1Textures.h"
 #include "j1Map.h"
+#include "ModuleCollision.h"
 #include <math.h>
 
 j1Map::j1Map() : j1Module(), map_loaded(false)
@@ -55,6 +56,40 @@ void j1Map::Draw()
 	}
 	
 	// TODO 10(old): Complete the draw function
+}
+
+
+void j1Map::DrawObjects()
+{
+	if (map_loaded == false)
+		return;
+
+	for (uint i = 0; i < data.object_groups.count(); i++)
+	{
+		MapObjectG* objectg = data.object_groups[i];
+
+		if (objectg[i].name == "Ground")
+		{
+			for (int j = 0; j < objectg[i].objects.count(); j++)
+			{
+				App->collision->AddCollider(*objectg[i].objects[j], COLLIDER_WALL);
+			}
+		}
+		else if (objectg[i].name == "Win")
+		{
+			for (int j = 0; j < objectg[i].objects.count(); j++)
+			{
+				App->collision->AddCollider(*objectg[i].objects[j], COLLIDER_WIN);
+			}
+		}
+		else if (objectg[i].name == "Death")
+		{
+			for (int j = 0; j < objectg[i].objects.count(); j++)
+			{
+				App->collision->AddCollider(*objectg[i].objects[j], COLLIDER_ENEMY_SHOT);
+			}
+		}
+	}
 }
 
 iPoint j1Map::MapToWorld(int x, int y) const
@@ -181,6 +216,18 @@ bool j1Map::Load(const char* file_name)
 
 		if(ret == true)
 			data.layers.add(lay);
+	}
+
+	// Load object info ----------------------------------------------
+	pugi::xml_node objectg;
+	for (objectg = map_file.child("map").child("objectgroup"); objectg && ret; objectg = objectg.next_sibling("objectgroup"))
+	{
+		MapObjectG* objg = new MapObjectG();
+
+		ret = LoadObjectGroup(objectg, objg);
+
+		if (ret == true)
+			data.object_groups.add(objg);
 	}
 
 	if(ret == true)
@@ -371,4 +418,35 @@ bool j1Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 	}
 
 	return ret;
+}
+
+bool j1Map::LoadObjectGroup(pugi::xml_node& node, MapObjectG* objectg)
+{
+	bool ret = true;
+
+	//for 
+	//objectg->objects = node.attribute("name").as_string();
+	//objectg->width = node.attribute("width").as_int();
+	//objectg->height = node.attribute("height").as_int();
+	//pugi::xml_node layer_data = node.child("data");
+
+	//if (layer_data == NULL)
+	//{
+	//	LOG("Error parsing map xml file: Cannot find 'layer/data' tag.");
+	//	ret = false;
+	//	RELEASE(layer);
+	//}
+	//else
+	//{
+	//	layer->data = new uint[layer->width*layer->height];
+	//	memset(layer->data, 0, layer->width*layer->height);
+
+	//	int i = 0;
+	//	for (pugi::xml_node tile = layer_data.child("tile"); tile; tile = tile.next_sibling("tile"))
+	//	{
+	//		layer->data[i++] = tile.attribute("gid").as_int(0);
+	//	}
+	//}
+
+	//return ret;
 }
