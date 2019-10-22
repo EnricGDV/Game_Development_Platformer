@@ -25,8 +25,45 @@ bool j1Player::Awake(pugi::xml_node& config)
 {
 	bool ret = true;
 
-	//folder.create(config.child("folder").child_value());
-	//texture_path = config.child("sprite_sheet").attribute("source").as_string();
+	spritesheetN.create(config.child("spritesheet").attribute("name").as_string());
+	for (pugi::xml_node animations = config.child("spritesheet").child("animation"); animations && ret; animations = animations.next_sibling("animation"))
+	{
+		p2SString temp(animations.attribute("name").as_string());
+		if (temp == "angel_idle")
+		{
+			for (pugi::xml_node frame = animations.child("frame"); frame && ret; frame = frame.next_sibling("frame"))
+				Player.angel_idle.PushBack({ frame.attribute("x").as_int() , frame.attribute("y").as_int(), frame.attribute("width").as_int(), frame.attribute("height").as_int() });
+
+			Player.angel_idle.speed = animations.attribute("speed").as_float();
+			Player.angel_idle.loop = animations.attribute("loop").as_bool();
+		}
+		if (temp == "angel_moving")
+		{
+			for (pugi::xml_node frame = animations.child("frame"); frame && ret; frame = frame.next_sibling("frame"))
+				Player.angel_moving.PushBack({ frame.attribute("x").as_int() , frame.attribute("y").as_int(), frame.attribute("width").as_int(), frame.attribute("height").as_int() });
+
+			Player.angel_moving.speed = animations.attribute("speed").as_float();
+			Player.angel_moving.loop = animations.attribute("loop").as_bool();
+		}
+		if (temp == "angel_jumping")
+		{
+			for (pugi::xml_node frame = animations.child("frame"); frame && ret; frame = frame.next_sibling("frame"))
+				Player.angel_jumping.PushBack({ frame.attribute("x").as_int() , frame.attribute("y").as_int(), frame.attribute("width").as_int(), frame.attribute("height").as_int() });
+
+			Player.angel_jumping.speed = animations.attribute("speed").as_float();
+			Player.angel_jumping.loop = animations.attribute("loop").as_bool();
+		}
+		if (temp == "angel_falling")
+		{
+			for (pugi::xml_node frame = animations.child("frame"); frame && ret; frame = frame.next_sibling("frame"))
+				Player.angel_falling.PushBack({ frame.attribute("x").as_int() , frame.attribute("y").as_int(), frame.attribute("width").as_int(), frame.attribute("height").as_int() });
+
+			Player.angel_falling.speed = animations.attribute("speed").as_float();
+			Player.angel_falling.loop = animations.attribute("loop").as_bool();
+		}
+	}
+
+	Player.current_animation = &Player.angel_idle;
 
 	Player.jumpSpeed.x = config.child("jumpSpeed").attribute("x").as_int();
 	Player.jumpSpeed.y = config.child("jumpSpeed").attribute("y").as_int();
@@ -49,7 +86,7 @@ bool j1Player::Awake(pugi::xml_node& config)
 
 bool j1Player::Start()
 {
-	Player.LoadPushbacks();
+	//Player.LoadPushbacks();
 
 	Player.speed = { 0,0 };
 
@@ -59,10 +96,8 @@ bool j1Player::Start()
 	Player.isJumping = false;
 	Player.canDash = true;
 
-	Player.current_animation = &Player.idle;
+	Player.current_animation = &Player.angel_idle;
 
-
-	//Player.PlayerTexture = App->tex->Load(PATH(folder.GetString(), texture_path.GetString()));
 
 	return true;
 }
@@ -103,6 +138,7 @@ bool j1Player::Update(float dt)
 
 	AnimChange();
 	PlayerMov();
+	Draw();
 	return true;
 }
 
@@ -203,7 +239,7 @@ void j1Player::ArrivesFloor()
 
 	Player.canDJump = false;
 	Player.onFloor = true;
-	Player.jumping.Reset();
+	Player.angel_jumping.Reset();
 }
 
 void j1Player::DoubleJump()
@@ -221,20 +257,20 @@ void j1Player::AnimChange()
 	{
 		if (Player.speed.x == 0)
 		{
-			Player.current_animation = &Player.idle;
+			Player.current_animation = &Player.angel_idle;
 		}
 		else
 		{
-			Player.current_animation = &Player.moving;
+			Player.current_animation = &Player.angel_moving;
 		}
 	}
 	else if (Player.speed.y < 0)
 	{
-		Player.current_animation = &Player.jumping;
+		Player.current_animation = &Player.angel_jumping;
 	}
 	else
 	{
-		Player.current_animation = &Player.falling;
+		Player.current_animation = &Player.angel_falling;
 	}
 }
 
@@ -272,10 +308,10 @@ bool j1Player::PositionCameraOnPlayer()
 	return true;
 }
 
-void PlayerData::LoadPushbacks()
-{
-
-}
+//void PlayerData::LoadPushbacks()
+//{
+//
+//}
 
 void j1Player::RestartPlayer()
 {

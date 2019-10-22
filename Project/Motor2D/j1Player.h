@@ -14,10 +14,10 @@ struct SDL_Texture;
 struct PlayerData
 {
 	Animation*			current_animation;
-	Animation			idle;
-	Animation			moving;
-	Animation			jumping;
-	Animation			falling;
+	Animation			angel_idle;
+	Animation			angel_moving;
+	Animation			angel_jumping;
+	Animation			angel_falling;
 	bool				canDJump;
 	bool				isDemon;
 	bool				canDash;
@@ -33,9 +33,10 @@ struct PlayerData
 	iPoint				offPath;
 	Collider*			collider;
 	SDL_Texture*		PlayerTexture;
+	
 
 
-	void LoadPushbacks();
+	//void LoadPushbacks();
 };
 
 class j1Player : public j1Module
@@ -95,8 +96,8 @@ public:
 private:
 
 	PlayerData		Player;
-	p2SString		folder;
-	p2SString		texture_path;
+	p2SString			spritesheetN;
+	fPoint				temp;
 };
 
 
