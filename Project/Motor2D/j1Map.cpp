@@ -424,27 +424,22 @@ bool j1Map::LoadObjectGroup(pugi::xml_node& node, MapObjectG* objectg)
 {
 	bool ret = true;
 
-	for 
-	objectg->objects = node.attribute("name").as_string();
-	objectg->width = node.attribute("width").as_int();
-	objectg->height = node.attribute("height").as_int();
-	pugi::xml_node layer_data = node.child("data");
-
-	if (layer_data == null)
+	objectg->name = node.attribute("name").as_string();
+	int i = 0;
+	if (node.child("object") == NULL)
 	{
-		log("error parsing map xml file: cannot find 'layer/data' tag.");
+		LOG("Error parsing map xml file: Cannot find 'objectgroup/object' tag.");
 		ret = false;
-		release(layer);
+		RELEASE(objectg);
 	}
 	else
 	{
-		layer->data = new uint[layer->width*layer->height];
-		memset(layer->data, 0, layer->width*layer->height);
-
-		int i = 0;
-		for (pugi::xml_node tile = layer_data.child("tile"); tile; tile = tile.next_sibling("tile"))
+		for (pugi::xml_node object = node.child("object"); object; object = object.next_sibling("object"), i++)
 		{
-			layer->data[i++] = tile.attribute("gid").as_int(0);
+			objectg->objects[i]->x = object.attribute("x").as_int;
+			objectg->objects[i]->y = object.attribute("y").as_int;
+			objectg->objects[i]->h = object.attribute("height").as_int;
+			objectg->objects[i]->w = object.attribute("width").as_int;
 		}
 	}
 
