@@ -27,37 +27,85 @@ bool j1Map::Awake(pugi::xml_node& config)
 	return ret;
 }
 
+//void j1Map::Draw()
+//{
+//	if(map_loaded == false)
+//		return;
+//
+//	// TODO 5(old): Prepare the loop to draw all tilesets + Blit
+//	 // for now we just use the first layer and tileset
+//	
+//
+//	for (uint i = 0; i < data.layers.count(); i++)
+//	{
+//		MapLayer* layer = data.layers[i];
+//
+//		for (uint j = 0; j < data.tilesets.count(); j++)
+//		{
+//			TileSet* tileset = data.tilesets[j];
+//
+//			for (int y = 0; y < data.height; y++)
+//			{
+//				for (int x = 0; x < data.width; x++)
+//				{
+//					uint idtile = layer->Get(x, y);
+//					App->render->Blit(tileset->texture, MapToWorld(x, y).x, MapToWorld(x, y).y, &tileset->GetTileRect(idtile));
+//				}
+//			}
+//		}
+//	}
+//	
+//	// TODO 10(old): Complete the draw function
+//}
+
 void j1Map::Draw()
 {
-	if(map_loaded == false)
+	if (map_loaded == false)
 		return;
 
-	// TODO 5(old): Prepare the loop to draw all tilesets + Blit
-	 // for now we just use the first layer and tileset
-	
+	p2List_item<MapLayer*>* item = data.layers.start;
 
-	for (uint i = 0; i < data.layers.count(); i++)
+	for (; item != NULL; item = item->next)
 	{
-		MapLayer* layer = data.layers[i];
+		MapLayer* layer = item->data;
 
-		for (uint j = 0; j < data.tilesets.count(); j++)
+		for (int y = 0; y < data.height; ++y)
 		{
-			TileSet* tileset = data.tilesets[j];
-
-			for (int y = 0; y < data.height; y++)
+			for (int x = 0; x < data.width; ++x)
 			{
-				for (int x = 0; x < data.width; x++)
+				int tile_id = layer->Get(x, y);
+				if (tile_id > 0)
 				{
-					uint idtile = layer->Get(x, y);
-					App->render->Blit(tileset->texture, MapToWorld(x, y).x, MapToWorld(x, y).y, &tileset->GetTileRect(idtile));
+					TileSet* tileset = GetTilesetFromTileId(tile_id);
+
+					SDL_Rect r = tileset->GetTileRect(tile_id);
+					iPoint pos = MapToWorld(x, y);
+
+					App->render->Blit(tileset->texture, pos.x, pos.y, &r);
 				}
 			}
 		}
 	}
-	
-	// TODO 10(old): Complete the draw function
 }
 
+TileSet* j1Map::GetTilesetFromTileId(int id) const
+{
+	p2List_item<TileSet*>* item = data.tilesets.start;
+	TileSet* set = item->data;
+
+	while (item)
+	{
+		if (id < item->data->firstgid)
+		{
+			set = item->prev->data;
+			break;
+		}
+		set = item->data;
+		item = item->next;
+	}
+
+	return set;
+}
 
 void j1Map::DrawObjects()
 {
@@ -68,25 +116,25 @@ void j1Map::DrawObjects()
 	{
 		MapObjectG* objectg = data.object_groups[i];
 
-		if (objectg[i].name == "Ground")
+		if (objectg->name == "Ground")
 		{
-			for (int j = 0; j < objectg[i].objects.count(); j++)
+			for (int j = 0; j < objectg->num_objects; j++)
 			{
-				App->collision->AddCollider(*objectg[i].objects[j], COLLIDER_WALL);
+				App->collision->AddCollider(objectg->objects[j], COLLIDER_WALL);
 			}
 		}
-		else if (objectg[i].name == "Win")
+		else if (objectg->name == "Win")
 		{
-			for (int j = 0; j < objectg[i].objects.count(); j++)
+			for (int j = 0; j < objectg->num_objects; j++)
 			{
-				App->collision->AddCollider(*objectg[i].objects[j], COLLIDER_WIN);
+				App->collision->AddCollider(objectg->objects[j], COLLIDER_WIN);
 			}
 		}
-		else if (objectg[i].name == "Death")
+		else if (objectg->name == "Death")
 		{
-			for (int j = 0; j < objectg[i].objects.count(); j++)
+			for (int j = 0; j < objectg->num_objects; j++)
 			{
-				App->collision->AddCollider(*objectg[i].objects[j], COLLIDER_ENEMY_SHOT);
+				App->collision->AddCollider(objectg->objects[j], COLLIDER_ENEMY_SHOT);
 			}
 		}
 	}
@@ -436,11 +484,17 @@ bool j1Map::LoadObjectGroup(pugi::xml_node& node, MapObjectG* objectg)
 	{
 		for (pugi::xml_node object = node.child("object"); object; object = object.next_sibling("object"), i++)
 		{
-			objectg->objects[i]->x = object.attribute("x").as_int;
-			objectg->objects[i]->y = object.attribute("y").as_int;
-			objectg->objects[i]->h = object.attribute("height").as_int;
-			objectg->objects[i]->w = object.attribute("width").as_int;
+	
 		}
+		objectg->num_objects = i;
+		objectg->objects = new SDL_Rect[objectg->num_objects];
+		i = 0;
+		for (pugi::xml_node object = node.child("object"); object; object = object.next_sibling("object"), i++)
+		{
+			SDL_Rect rect = { object.attribute("x").as_int(), object.attribute("y").as_int(), object.attribute("width").as_int(), object.attribute("height").as_int() };
+			objectg->objects[i] = rect;
+		}
+		
 	}
 
 	return ret;

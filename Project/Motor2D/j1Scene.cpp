@@ -64,6 +64,7 @@ bool j1Scene::Update(float dt)
 		App->render->camera.x -= 5;
 
 	App->map->Draw();
+	App->map->DrawObjects();
 
 	int x, y;
 	App->input->GetMousePosition(x, y);

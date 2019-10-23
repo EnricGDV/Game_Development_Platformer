@@ -34,7 +34,8 @@ struct MapLayer
 struct MapObjectG
 {
 	p2SString	name;
-	p2List<SDL_Rect*>   objects;
+	SDL_Rect*   objects;
+	int         num_objects;
 
 	MapObjectG() : objects(NULL)
 	{}
@@ -121,6 +122,8 @@ private:
 	bool LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set);
 	bool LoadLayer(pugi::xml_node& node, MapLayer* layer);
 	bool LoadObjectGroup(pugi::xml_node& node, MapObjectG* objectg);
+
+	TileSet* GetTilesetFromTileId(int id) const;
 
 public:
 
