@@ -35,9 +35,8 @@
     <folder>maps/</folder>
   </map>
 
-  <spritesheet name="textures/spritesheet.png"/>
   <player>
-    <animations>
+    <spritesheetS name="textures/spritesheet.png">
       <animation name="angel_idle" loop="true" speed="1.0">
         <frame height="24" width="25" y="131" x="0"/>
         <frame height="24" width="25" y="131" x="29"/>
@@ -57,7 +56,7 @@
         <frame height="24" width="25" y="4" x="223"/>
         <frame height="24" width="25" y="4" x="251"/>
       </animation>
-    </animations>
+    </spritesheetS>
   </player>
   
 </config>

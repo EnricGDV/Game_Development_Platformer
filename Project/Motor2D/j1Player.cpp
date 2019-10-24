@@ -25,8 +25,8 @@ bool j1Player::Awake(pugi::xml_node& config)
 {
 	bool ret = true;
 
-	spritesheetN.create(config.child("spritesheet").attribute("name").as_string());
-	for (pugi::xml_node animations = config.child("spritesheet").child("animation"); animations && ret; animations = animations.next_sibling("animation"))
+	spritesheetN.create(config.child("spritesheetS").attribute("name").as_string());
+	for (pugi::xml_node animations = config.child("spritesheetS").child("animation"); animations && ret; animations = animations.next_sibling("animation"))
 	{
 		p2SString temp(animations.attribute("name").as_string());
 		if (temp == "angel_idle")
@@ -96,7 +96,7 @@ bool j1Player::Start()
 	Player.isJumping = false;
 	Player.canDash = true;
 
-	Player.current_animation = &Player.angel_idle;
+	//Player.current_animation = &Player.angel_idle;
 
 
 	return true;
