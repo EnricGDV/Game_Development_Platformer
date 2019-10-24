@@ -32,7 +32,7 @@ struct PlayerData
 	iPoint				position;
 	iPoint				offPath;
 	Collider*			collider;
-	SDL_Texture*		PlayerTexture;
+	//SDL_Texture*		PlayerTexture;
 	
 
 
@@ -95,9 +95,10 @@ public:
 
 private:
 
-	PlayerData		Player;
+	PlayerData			Player;
 	p2SString			spritesheetN;
 	fPoint				temp;
+	SDL_Texture*		graphics = nullptr;
 };
 
 
