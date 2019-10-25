@@ -64,7 +64,7 @@ bool j1Player::Awake(pugi::xml_node& config)
 		}
 	}
 
-	Player.current_animation = &Player.angel_idle;
+	//Player.current_animation = &Player.angel_idle;
 
 	Player.jumpSpeed.x = config.child("jumpSpeed").attribute("x").as_int();
 	Player.jumpSpeed.y = config.child("jumpSpeed").attribute("y").as_int();
@@ -102,7 +102,7 @@ bool j1Player::Start()
 	Player.isJumping = false;
 	Player.canDash = true;
 
-	//Player.current_animation = &Player.angel_idle;
+	Player.current_animation = &Player.angel_idle;
 
 
 	return true;
@@ -167,22 +167,6 @@ bool j1Player::Clean()
 	return true;
 }
 
-// Load Game
-bool j1Player::Load(pugi::xml_node& data)
-{
-	Player.position.x = data.child("position").attribute("x").as_int();
-	Player.position.y = data.child("position").attribute("y").as_int();
-	Player.speed.x = data.child("speed").attribute("x").as_int();
-	Player.speed.y = data.child("speed").attribute("y").as_int();
-	Player.collider->rect.w = data.child("collider").attribute("width").as_int();
-	Player.collider->rect.h = data.child("collider").attribute("height").as_int();
-	Player.collider->rect.x = data.child("collider").attribute("x").as_int();
-	Player.collider->rect.y = data.child("collider").attribute("y").as_int();
-	Player.onFloor = data.child("onFloor").attribute("value").as_bool();
-
-	return true;
-}
-
 
 //Save Game
 bool j1Player::Save(pugi::xml_node& data) const
@@ -199,6 +183,23 @@ bool j1Player::Save(pugi::xml_node& data) const
 
 	return true;
 }
+
+// Load Game
+bool j1Player::Load(pugi::xml_node& data)
+{
+	Player.position.x = data.child("position").attribute("x").as_int();
+	Player.position.y = data.child("position").attribute("y").as_int();
+	Player.speed.x = data.child("speed").attribute("x").as_int();
+	Player.speed.y = data.child("speed").attribute("y").as_int();
+	Player.collider->rect.w = data.child("collider").attribute("width").as_int();
+	Player.collider->rect.h = data.child("collider").attribute("height").as_int();
+	Player.collider->rect.x = data.child("collider").attribute("x").as_int();
+	Player.collider->rect.y = data.child("collider").attribute("y").as_int();
+	Player.onFloor = data.child("onFloor").attribute("value").as_bool();
+
+	return true;
+}
+
 
 
 void j1Player::MirrorSprite()
@@ -297,19 +298,19 @@ void j1Player::Draw()
 
 iPoint j1Player::Gravity(iPoint vec)
 {
-	//vec.y += Player.acceleration.y;
-	//if (vec.y > Player.maxSpeed.y)
-	//{
-	//	vec.y = Player.maxSpeed.y;
-	//}
+	/*vec.y += Player.acceleration.y;
+	if (vec.y > Player.maxSpeed.y)
+	{
+		vec.y = Player.maxSpeed.y;
+	}*/
 	return vec;
 }
 
 bool j1Player::PositionCameraOnPlayer()
 {
-	App->render->camera.x = Player.position.x - App->render->camera.w / 3;
+	App->render->camera.x = Player.position.x - App->render->camera.w / 2;
 	if (App->render->camera.x < 0)App->render->camera.x = 0;
-	App->render->camera.y = Player.position.y - App->render->camera.h / 2;
+	App->render->camera.y = Player.position.y - App->render->camera.h / 3;
 	//if (App->render->camera.y + App->win->height > App->map->data.height*App->map->data.tile_height)App->render->camera.y = App->map->data.height*App->map->data.tile_height - App->win->height;
 	return true;
 }
