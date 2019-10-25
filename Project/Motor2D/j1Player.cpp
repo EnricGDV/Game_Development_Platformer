@@ -25,8 +25,9 @@ bool j1Player::Awake(pugi::xml_node& config)
 {
 	bool ret = true;
 
-	spritesheetN.create(config.child("spritesheet").attribute("name").as_string());
-	for (pugi::xml_node animations = config.child("spritesheet").child("animation"); animations && ret; animations = animations.next_sibling("animation"))
+	spritesheetN.create(config.child("spritesheetS").attribute("name").as_string());
+	pugi::xml_node animations;
+	for (animations = config.child("animations").first_child(); animations && ret; animations = animations.next_sibling("animation"))
 	{
 		p2SString temp(animations.attribute("name").as_string());
 		if (temp == "angel_idle")
@@ -90,13 +91,18 @@ bool j1Player::Start()
 
 	Player.speed = { 0,0 };
 
+	graphics = App->tex->Load(spritesheetN.GetString());
+	if (graphics == nullptr)
+	{
+		//return false;
+	}
 
 	isAlive = true;
 
 	Player.isJumping = false;
 	Player.canDash = true;
 
-	Player.current_animation = &Player.angel_idle;
+	//Player.current_animation = &Player.angel_idle;
 
 
 	return true;
@@ -113,19 +119,19 @@ bool j1Player::Update(float dt)
 
 	if (Player.isJumping && Player.canDJump)
 	{
-		if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
+		if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN)
 
 			DoubleJump();
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
+	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
 		Player.xDirection = 1, SpeedUp();
-	else if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
+	else if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
 		Player.xDirection = -1, SpeedUp();
 	else
 		SpeedDown();
 
-	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && Player.onFloor)
+	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN && Player.onFloor)
 	{
 		Player.isJumping = true;
 		Player.maxSpeed.x += Player.jumpSpeed.x;
@@ -157,7 +163,7 @@ bool j1Player::PostUpdate()
 bool j1Player::Clean()
 {
 	LOG("Cleaning Player");
-	App->tex->UnLoad(Player.PlayerTexture);
+	App->tex->UnLoad(graphics);
 	return true;
 }
 
@@ -284,9 +290,9 @@ void j1Player::PlayerMov()
 void j1Player::Draw()
 {
 	if (Player.mirror)
-		App->render->Blit(Player.PlayerTexture, Player.position.x, Player.position.y, &(Player.current_animation->GetCurrentFrame()), SDL_FLIP_HORIZONTAL, -1.0);
+		App->render->Blit(graphics, Player.position.x, Player.position.y, &(Player.current_animation->GetCurrentFrame()), SDL_FLIP_HORIZONTAL, -1.0);
 	else
-		App->render->Blit(Player.PlayerTexture, Player.position.x, Player.position.y, &(Player.current_animation->GetCurrentFrame()), SDL_FLIP_NONE, -1.0);
+		App->render->Blit(graphics, Player.position.x, Player.position.y, &(Player.current_animation->GetCurrentFrame()), SDL_FLIP_NONE, -1.0);
 }
 
 iPoint j1Player::Gravity(iPoint vec)
