@@ -94,7 +94,7 @@ bool j1Player::Start()
 	graphics = App->tex->Load(spritesheetN.GetString());
 	if (graphics == nullptr)
 	{
-		//return false;
+		return false;
 	}
 
 	isAlive = true;
