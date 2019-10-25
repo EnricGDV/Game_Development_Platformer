@@ -76,8 +76,8 @@ bool j1Player::Awake(pugi::xml_node& config)
 	Player.acceleration.x = config.child("acceleration").attribute("x").as_int();
 	Player.acceleration.y = config.child("acceleration").attribute("y").as_int();
 
-	Player.offPath.x = config.child("offPath").attribute("x").as_int();
-	Player.offPath.y = config.child("offPath").attribute("y").as_int();
+	Player.offSet.x = config.child("offPath").attribute("x").as_int();
+	Player.offSet.y = config.child("offPath").attribute("y").as_int();
 
 
 	Player.collider = App->collision->AddCollider({ config.child("initPos").attribute("x").as_int(), config.child("initPos").attribute("y").as_int(), config.child("col").attribute("w").as_int(), config.child("col").attribute("h").as_int() }, COLLIDER_PLAYER, this);
@@ -285,7 +285,7 @@ void j1Player::PlayerMov()
 {
 	Player.position += Player.speed;
 
-	Player.collider->SetPos(Player.position.x + Player.offPath.x, Player.position.y + Player.offPath.y);
+	Player.collider->SetPos(Player.position.x + Player.offSet.x, Player.position.y + Player.offSet.y);
 }
 
 void j1Player::Draw()
