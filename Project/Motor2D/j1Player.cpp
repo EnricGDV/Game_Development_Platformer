@@ -296,6 +296,7 @@ iPoint j1Player::Gravity(iPoint vec)
 	//{
 	//	vec.y = Player.maxSpeed.y;
 	//}
+	vec.y = -1;
 	return vec;
 }
 
