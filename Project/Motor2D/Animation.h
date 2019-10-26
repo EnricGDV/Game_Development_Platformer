@@ -22,6 +22,7 @@ public:
 	{
 		loops = a;
 	}
+
 	void PushBack(const SDL_Rect& rect)
 	{
 		frames[last_frame++] = rect;

@@ -64,7 +64,7 @@ bool j1Player::Awake(pugi::xml_node& config)
 		}
 	}
 
-	Player.current_animation = &Player.angel_idle;
+	//Player.current_animation = &Player.angel_idle;
 
 	Player.jumpSpeed.x = config.child("jumpSpeed").attribute("x").as_int();
 	Player.jumpSpeed.y = config.child("jumpSpeed").attribute("y").as_int();
@@ -76,8 +76,8 @@ bool j1Player::Awake(pugi::xml_node& config)
 	Player.acceleration.x = config.child("acceleration").attribute("x").as_int();
 	Player.acceleration.y = config.child("acceleration").attribute("y").as_int();
 
-	Player.offPath.x = config.child("offPath").attribute("x").as_int();
-	Player.offPath.y = config.child("offPath").attribute("y").as_int();
+	Player.offSet.x = config.child("offPath").attribute("x").as_int();
+	Player.offSet.y = config.child("offPath").attribute("y").as_int();
 
 
 	Player.collider = App->collision->AddCollider({ config.child("position").attribute("x").as_int(), config.child("position").attribute("y").as_int(), config.child("col").attribute("w").as_int(), config.child("col").attribute("h").as_int() }, COLLIDER_PLAYER, this);
@@ -94,7 +94,7 @@ bool j1Player::Start()
 	graphics = App->tex->Load(spritesheetN.GetString());
 	if (graphics == nullptr)
 	{
-		//return false;
+		return false;
 	}
 
 	isAlive = true;
@@ -102,7 +102,7 @@ bool j1Player::Start()
 	Player.isJumping = false;
 	Player.canDash = true;
 
-	//Player.current_animation = &Player.angel_idle;
+	Player.current_animation = &Player.angel_idle;
 
 
 	return true;
@@ -167,6 +167,22 @@ bool j1Player::Clean()
 	return true;
 }
 
+//Save Game
+bool j1Player::Save(pugi::xml_node& data) const
+{
+	data.append_child("position").append_attribute("x") = Player.position.x;
+	data.child("position").append_attribute("y") = Player.position.y;
+	data.append_child("speed").append_attribute("x") = Player.speed.x;
+	data.child("speed").append_attribute("y") = Player.speed.y;
+	data.append_child("col").append_attribute("width") = Player.collider->rect.w;
+	data.child("col").append_attribute("height") = Player.collider->rect.h;
+	data.child("col").append_attribute("x") = Player.collider->rect.x;
+	data.child("col").append_attribute("y") = Player.collider->rect.y;
+	data.append_child("onFloor").append_attribute("value") = Player.onFloor;
+
+	return true;
+}
+
 // Load Game
 bool j1Player::Load(pugi::xml_node& data)
 {
@@ -183,22 +199,6 @@ bool j1Player::Load(pugi::xml_node& data)
 	return true;
 }
 
-
-//Save Game
-bool j1Player::Save(pugi::xml_node& data) const
-{
-	data.append_child("position").append_attribute("x") = Player.position.x;
-	data.child("position").append_attribute("y") = Player.position.y;
-	data.append_child("speed").append_attribute("x") = Player.speed.x;
-	data.child("speed").append_attribute("y") = Player.speed.y;
-	data.append_child("col").append_attribute("width") = Player.collider->rect.w;
-	data.child("col").append_attribute("height") = Player.collider->rect.h;
-	data.child("col").append_attribute("x") = Player.collider->rect.x;
-	data.child("col").append_attribute("y") = Player.collider->rect.y;
-	data.append_child("onFloor").append_attribute("value") = Player.onFloor;
-
-	return true;
-}
 
 
 void j1Player::MirrorSprite()
@@ -284,7 +284,7 @@ void j1Player::PlayerMov()
 {
 	Player.position += Player.speed;
 
-	Player.collider->SetPos(Player.position.x + Player.offPath.x, Player.position.y + Player.offPath.y);
+	Player.collider->SetPos(Player.position.x + Player.offSet.x, Player.position.y + Player.offSet.y);
 }
 
 void j1Player::Draw()
@@ -297,20 +297,19 @@ void j1Player::Draw()
 
 iPoint j1Player::Gravity(iPoint vec)
 {
-	//vec.y += Player.acceleration.y;
-	//if (vec.y > Player.maxSpeed.y)
-	//{
-	//	vec.y = Player.maxSpeed.y;
-	//}
-	vec.y = 1;
+	/*vec.y += Player.acceleration.y;
+	if (vec.y > Player.maxSpeed.y)
+	{
+		vec.y = Player.maxSpeed.y;
+	}*/
 	return vec;
 }
 
 bool j1Player::PositionCameraOnPlayer()
 {
-	App->render->camera.x = Player.position.x - App->render->camera.w / 3;
+	App->render->camera.x = Player.position.x - App->render->camera.w / 2;
 	if (App->render->camera.x < 0)App->render->camera.x = 0;
-	App->render->camera.y = Player.position.y - App->render->camera.h / 2;
+	App->render->camera.y = Player.position.y - App->render->camera.h / 3;
 	//if (App->render->camera.y + App->win->height > App->map->data.height*App->map->data.tile_height)App->render->camera.y = App->map->data.height*App->map->data.tile_height - App->win->height;
 	return true;
 }
