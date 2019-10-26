@@ -297,11 +297,11 @@ void j1Player::Draw()
 
 iPoint j1Player::Gravity(iPoint vec)
 {
-	/*vec.y += Player.acceleration.y;
+	vec.y += Player.acceleration.y;
 	if (vec.y > Player.maxSpeed.y)
 	{
 		vec.y = Player.maxSpeed.y;
-	}*/
+	}
 	return vec;
 }
 
@@ -343,7 +343,31 @@ void j1Player::RestartPlayer()
 void j1Player::OnCollision(Collider* c1, Collider* c2)
 {
 	if (c1->type == COLLIDER_PLAYER && c2->type == COLLIDER_WALL)
+	{
+		if (Player.speed.y <= 0 && (c2->rect.y + c2->rect.h) < c1->rect.y)
 		{
-
+			Player.position.y = c2->rect.y + c2->rect.h + 1;
+			Player.isJumping = false;
 		}
+		if ((c2->rect.y + c2->rect.h) > c1->rect.y && c2->rect.y < c1->rect.y)
+		{
+			if (Player.speed.x > 0)
+				Player.position.x = c2->rect.x - 1;
+			else if (Player.speed.x < 0)
+				Player.position.x = c2->rect.x + c2->rect.w + 1;
+		}
+	}
+
+	if (c1->type == COLLIDER_PLAYER && c2->type == COLLIDER_WIN)
+	{
+		p2SString map = "map2.tmx";
+		App->map->mapChange(&map);
+	}
+
+	if (c1->type == COLLIDER_PLAYER && c2->type == COLLIDER_ENEMY_SHOT)
+	{
+		p2SString map = "map1.tmx";
+		App->map->mapChange(&map);
+	}
+
 }

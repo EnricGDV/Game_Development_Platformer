@@ -29,8 +29,8 @@
   <player>
     <acceleration x="1" y="-1"/>
     <jumpSpeed x="0" y="-26"/>
-    <initPos x ="30" y="200"/>
-    <position x ="30" y ="200"/>
+    <initPos x ="30" y="400"/>
+    <position x ="30" y ="400"/>
     <col w="32" h="32"/>
     <maxSpeed x="3" y="4"/>
     <offPath x="11" y="9"/>
