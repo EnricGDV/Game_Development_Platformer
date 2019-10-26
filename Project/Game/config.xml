@@ -36,21 +36,21 @@
     <offPath x="11" y="9"/>
     <spritesheetS name="textures/spritesheet.png"/>
     <animations>
-      <animation name="angel_idle" loop="true" speed="3.0">
+      <animation name="angel_idle" loop="true" speed="0.05">
         <frame height="24" width="25" y="131" x="0"/>
         <frame height="24" width="25" y="131" x="29"/>
       </animation>
-      <animation name="angel_moving" loop="true" speed="3.0">
+      <animation name="angel_moving" loop="true" speed="0.05">
         <frame height="24" width="25" y="4" x="0"/>
         <frame height="24" width="25" y="4" x="29"/>
         <frame height="24" width="25" y="4" x="57"/>
       </animation>
-      <animation name="angel_jumping" loop="false" speed="2.0">
+      <animation name="angel_jumping" loop="false" speed="0.05">
         <frame height="24" width="25" y="4" x="116"/>
         <frame height="24" width="25" y="4" x="143"/>
         <frame height="24" width="25" y="4" x="169"/>
       </animation>
-      <animation name="angel_falling" loop="false" speed="2.0">
+      <animation name="angel_falling" loop="false" speed="0.05">
         <frame height="24" width="25" y="4" x="196"/>
         <frame height="24" width="25" y="4" x="223"/>
         <frame height="24" width="25" y="4" x="251"/>
