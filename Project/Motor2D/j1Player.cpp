@@ -25,7 +25,7 @@ bool j1Player::Awake(pugi::xml_node& config)
 {
 	bool ret = true;
 
-	spritesheetN.create(config.child("spritesheetS").attribute("name").as_string());
+	spritesheetN = config.child("spritesheetS").attribute("name").as_string();
 	pugi::xml_node animations;
 	for (animations = config.child("animations").first_child(); animations && ret; animations = animations.next_sibling("animation"))
 	{
@@ -80,7 +80,7 @@ bool j1Player::Awake(pugi::xml_node& config)
 	Player.offPath.y = config.child("offPath").attribute("y").as_int();
 
 
-	Player.collider = App->collision->AddCollider({ config.child("initPos").attribute("x").as_int(), config.child("initPos").attribute("y").as_int(), config.child("col").attribute("w").as_int(), config.child("col").attribute("h").as_int() }, COLLIDER_PLAYER, this);
+	Player.collider = App->collision->AddCollider({ config.child("position").attribute("x").as_int(), config.child("position").attribute("y").as_int(), config.child("col").attribute("w").as_int(), config.child("col").attribute("h").as_int() }, COLLIDER_PLAYER, this);
 
 	return ret;
 }
@@ -174,10 +174,10 @@ bool j1Player::Load(pugi::xml_node& data)
 	Player.position.y = data.child("position").attribute("y").as_int();
 	Player.speed.x = data.child("speed").attribute("x").as_int();
 	Player.speed.y = data.child("speed").attribute("y").as_int();
-	Player.collider->rect.w = data.child("collider").attribute("width").as_int();
-	Player.collider->rect.h = data.child("collider").attribute("height").as_int();
-	Player.collider->rect.x = data.child("collider").attribute("x").as_int();
-	Player.collider->rect.y = data.child("collider").attribute("y").as_int();
+	Player.collider->rect.w = data.child("col").attribute("width").as_int();
+	Player.collider->rect.h = data.child("col").attribute("height").as_int();
+	Player.collider->rect.x = data.child("col").attribute("x").as_int();
+	Player.collider->rect.y = data.child("col").attribute("y").as_int();
 	Player.onFloor = data.child("onFloor").attribute("value").as_bool();
 
 	return true;
@@ -191,10 +191,10 @@ bool j1Player::Save(pugi::xml_node& data) const
 	data.child("position").append_attribute("y") = Player.position.y;
 	data.append_child("speed").append_attribute("x") = Player.speed.x;
 	data.child("speed").append_attribute("y") = Player.speed.y;
-	data.append_child("collider").append_attribute("width") = Player.collider->rect.w;
-	data.child("collider").append_attribute("height") = Player.collider->rect.h;
-	data.child("collider").append_attribute("x") = Player.collider->rect.x;
-	data.child("collider").append_attribute("y") = Player.collider->rect.y;
+	data.append_child("col").append_attribute("width") = Player.collider->rect.w;
+	data.child("col").append_attribute("height") = Player.collider->rect.h;
+	data.child("col").append_attribute("x") = Player.collider->rect.x;
+	data.child("col").append_attribute("y") = Player.collider->rect.y;
 	data.append_child("onFloor").append_attribute("value") = Player.onFloor;
 
 	return true;
@@ -302,7 +302,7 @@ iPoint j1Player::Gravity(iPoint vec)
 	//{
 	//	vec.y = Player.maxSpeed.y;
 	//}
-	vec.y = -1;
+	vec.y = 1;
 	return vec;
 }
 

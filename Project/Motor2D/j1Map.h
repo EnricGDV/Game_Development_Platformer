@@ -115,6 +115,9 @@ public:
 	iPoint MapToWorld(int x, int y) const;
 	iPoint WorldToMap(int x, int y) const;
 
+	//Change map
+	bool mapChange(p2SString* nmap);
+
 private:
 
 	bool LoadMap();

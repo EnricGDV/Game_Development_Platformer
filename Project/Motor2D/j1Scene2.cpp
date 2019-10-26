@@ -8,43 +8,44 @@
 #include "j1Window.h"
 #include "j1Map.h"
 #include "j1Scene.h"
+#include "j1Scene2.h"
 
-j1Scene::j1Scene() : j1Module()
+j1Scene2::j1Scene2() : j1Module()
 {
-	name.create("scene");
+	name.create("scene2");
 }
 
 // Destructor
-j1Scene::~j1Scene()
+j1Scene2::~j1Scene2()
 {}
 
 // Called before render is available
-bool j1Scene::Awake()
+bool j1Scene2::Awake()
 {
-	LOG("Loading Scene");
+	LOG("Loading Scene 2");
 	bool ret = true;
 
 	return ret;
 }
 
 // Called before the first frame
-bool j1Scene::Start()
+bool j1Scene2::Start()
 {
-
-	App->map->Load("map1.tmx");
-
+	
+	App->map->Load("map2.tmx");
 	//App->map->Load("iso.tmx");
+	
 	return true;
 }
 
 // Called each loop iteration
-bool j1Scene::PreUpdate()
+bool j1Scene2::PreUpdate()
 {
 	return true;
 }
 
 // Called each loop iteration
-bool j1Scene::Update(float dt)
+bool j1Scene2::Update(float dt)
 {
 	if(App->input->GetKey(SDL_SCANCODE_L) == KEY_DOWN)
 		App->LoadGame("save_game.xml");
@@ -64,20 +65,6 @@ bool j1Scene::Update(float dt)
 	if(App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
 		App->render->camera.x -= 5;
 
-	if (App->input->GetKey(SDL_SCANCODE_M) == KEY_DOWN)
-	{
-		if (mapname == "map1.tmx")
-		{
-			mapname = "map2.tmx";
-		}
-		else if (mapname == "map2.tmx")
-		{
-			mapname = "map1.tmx";
-		}
-		App->map->mapChange(&mapname);
-	}
-
-
 	App->map->Draw();
 	App->map->DrawObjects();
 
@@ -95,7 +82,7 @@ bool j1Scene::Update(float dt)
 }
 
 // Called each loop iteration
-bool j1Scene::PostUpdate()
+bool j1Scene2::PostUpdate()
 {
 	bool ret = true;
 
@@ -106,7 +93,7 @@ bool j1Scene::PostUpdate()
 }
 
 // Called before quitting
-bool j1Scene::CleanUp()
+bool j1Scene2::CleanUp()
 {
 	LOG("Freeing scene");
 

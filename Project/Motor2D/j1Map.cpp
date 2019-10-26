@@ -4,6 +4,7 @@
 #include "j1Render.h"
 #include "j1Textures.h"
 #include "j1Map.h"
+#include "j1Scene.h"
 #include "ModuleCollision.h"
 #include <math.h>
 
@@ -27,36 +28,6 @@ bool j1Map::Awake(pugi::xml_node& config)
 	return ret;
 }
 
-//void j1Map::Draw()
-//{
-//	if(map_loaded == false)
-//		return;
-//
-//	// TODO 5(old): Prepare the loop to draw all tilesets + Blit
-//	 // for now we just use the first layer and tileset
-//	
-//
-//	for (uint i = 0; i < data.layers.count(); i++)
-//	{
-//		MapLayer* layer = data.layers[i];
-//
-//		for (uint j = 0; j < data.tilesets.count(); j++)
-//		{
-//			TileSet* tileset = data.tilesets[j];
-//
-//			for (int y = 0; y < data.height; y++)
-//			{
-//				for (int x = 0; x < data.width; x++)
-//				{
-//					uint idtile = layer->Get(x, y);
-//					App->render->Blit(tileset->texture, MapToWorld(x, y).x, MapToWorld(x, y).y, &tileset->GetTileRect(idtile));
-//				}
-//			}
-//		}
-//	}
-//	
-//	// TODO 10(old): Complete the draw function
-//}
 
 void j1Map::Draw()
 {
@@ -499,3 +470,11 @@ bool j1Map::LoadObjectGroup(pugi::xml_node& node, MapObjectG* objectg)
 
 	return ret;
 }
+
+bool j1Map::mapChange(p2SString* nmap)
+{
+	CleanUp();
+	Load(nmap->GetString());
+	return true;
+}
+
