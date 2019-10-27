@@ -129,7 +129,6 @@ bool j1Player::Awake(pugi::xml_node& config)
 bool j1Player::Start()
 {
 	Player.speed = { 0,0 };
-	Player.position = Player.initPosition;
 
 	graphics = App->tex->Load(spritesheetN.GetString());
 	if (graphics == nullptr)
@@ -423,10 +422,7 @@ void j1Player::PlayerMov()
 
 void j1Player::Draw()
 {
-	if (Player.mirror)
-		App->render->Blit(graphics, Player.position.x, Player.position.y, &(Player.current_animation->GetCurrentFrame()), SDL_FLIP_HORIZONTAL, -1.0);
-	else
-		App->render->Blit(graphics, Player.position.x, Player.position.y, &(Player.current_animation->GetCurrentFrame()), SDL_FLIP_HORIZONTAL, -1.0);
+	App->render->Blit(graphics, Player.position.x, Player.position.y, &(Player.current_animation->GetCurrentFrame()), SDL_FLIP_HORIZONTAL, -1.0);
 }
 
 iPoint j1Player::Gravity(iPoint vec)
