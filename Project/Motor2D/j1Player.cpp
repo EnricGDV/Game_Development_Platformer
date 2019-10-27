@@ -307,10 +307,10 @@ iPoint j1Player::Gravity(iPoint vec)
 
 bool j1Player::PositionCameraOnPlayer()
 {
-	App->render->camera.x = Player.position.x - App->render->camera.w / 2;
+	/*App->render->camera.x = Player.position.x - App->render->camera.w / 2;
 	if (App->render->camera.x < 0)App->render->camera.x = 0;
 	App->render->camera.y = Player.position.y - App->render->camera.h / 3;
-	//if (App->render->camera.y + App->win->height > App->map->data.height*App->map->data.tile_height)App->render->camera.y = App->map->data.height*App->map->data.tile_height - App->win->height;
+	if (App->render->camera.y + App->win->height > App->map->data.height*App->map->data.tile_height)App->render->camera.y = App->map->data.height*App->map->data.tile_height - App->win->height;*/
 	return true;
 }
 
