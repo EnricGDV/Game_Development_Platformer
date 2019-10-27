@@ -257,7 +257,6 @@ bool j1Player::Update(float dt)
 
 bool j1Player::PostUpdate()
 {
-
 	return true;
 }
 
@@ -434,11 +433,6 @@ iPoint j1Player::Gravity(iPoint vec)
 	}
 
 	return vec;
-}
-
-void j1Player::RestartPlayer()
-{
-	//Write initial values 
 }
 
 void j1Player::OnCollision(Collider* c1, Collider* c2)
