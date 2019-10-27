@@ -91,11 +91,11 @@ private:
 
 public:
 
-	bool			isAlive;
+	bool				isAlive;
+	PlayerData			Player;
 
 private:
 
-	PlayerData			Player;
 	p2SString			spritesheetN;
 	fPoint				temp;
 	SDL_Texture*		graphics = nullptr;
