@@ -30,6 +30,8 @@ struct PlayerData
 	bool				onFloor;
 	bool                godmode = false;
 	int					xDirection;
+	int                 map;
+	int                 savedmap;
 	iPoint				jumpSpeed;
 	iPoint				acceleration;
 	iPoint				maxSpeed;

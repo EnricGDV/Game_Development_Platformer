@@ -120,6 +120,9 @@ bool j1Player::Awake(pugi::xml_node& config)
 
 	Player.collider = App->collision->AddCollider({ config.child("position").attribute("x").as_int(), config.child("position").attribute("y").as_int(), config.child("col").attribute("w").as_int(), config.child("col").attribute("h").as_int() }, COLLIDER_PLAYER, this);
 	Player.colInit = { config.child("position").attribute("x").as_int(), config.child("position").attribute("y").as_int(), config.child("col").attribute("w").as_int(), config.child("col").attribute("h").as_int() };
+
+	Player.map = config.child("map").attribute("value").as_int();
+
 	return ret;
 }
 
@@ -279,6 +282,7 @@ bool j1Player::Save(pugi::xml_node& data) const
 	data.child("col").append_attribute("x") = Player.collider->rect.x;
 	data.child("col").append_attribute("y") = Player.collider->rect.y;
 	data.append_child("onFloor").append_attribute("value") = Player.onFloor;
+	data.append_child("map").append_attribute("value") = Player.savedmap;
 
 	return true;
 }
@@ -295,6 +299,7 @@ bool j1Player::Load(pugi::xml_node& data)
 	Player.collider->rect.x = data.child("col").attribute("x").as_int();
 	Player.collider->rect.y = data.child("col").attribute("y").as_int();
 	Player.onFloor = data.child("onFloor").attribute("value").as_bool();
+	Player.savedmap = data.child("map").attribute("value").as_bool();
 
 	return true;
 }

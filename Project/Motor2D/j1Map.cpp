@@ -488,6 +488,15 @@ bool j1Map::mapChange(p2SString* nmap)
 	App->collision->CleanUp();
 	CleanUp();
 	Load(nmap->GetString());
+
+	if (App->player->Player.map == 1)
+	{
+		App->player->Player.map = 2;
+	}
+	else if (App->player->Player.map == 2)
+	{
+		App->player->Player.map = 1;
+	}
 	
 	return true;
 }
