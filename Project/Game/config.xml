@@ -29,10 +29,10 @@
 
   <player>
     <acceleration x="1" y="1"/>
-    <jumpSpeed x="0" y="20"/>
+    <jumpSpeed x="0" y="18"/>
     <initPos x ="120" y="2000"/>
     <col w="32" h="32"/>
-    <maxSpeed x="2" y="1"/>
+    <maxSpeed x="2" y="2"/>
     <offSet x="0" y="0"/>
     <spritesheetS name="textures/spritesheet.png"/>
     <animations>
@@ -40,7 +40,7 @@
         <frame height="24" width="25" y="131" x="0"/>
         <frame height="24" width="25" y="131" x="29"/>
       </animation>
-      <animation name="angel_moving" loop="true" speed="0.03">
+      <animation name="angel_moving" loop="true" speed="0.04">
         <frame height="24" width="25" y="4" x="0"/>
         <frame height="24" width="25" y="4" x="29"/>
         <frame height="24" width="25" y="4" x="57"/>
