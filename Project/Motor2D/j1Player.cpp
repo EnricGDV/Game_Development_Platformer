@@ -297,11 +297,12 @@ void j1Player::Draw()
 
 iPoint j1Player::Gravity(iPoint vec)
 {
-	vec.y += Player.acceleration.y;
-	if (vec.y > Player.maxSpeed.y)
-	{
-		vec.y = Player.maxSpeed.y;
-	}
+	//vec.y += Player.acceleration.y;
+	//if (vec.y > Player.maxSpeed.y)
+	//{
+	//	vec.y = Player.maxSpeed.y;
+	//}
+	vec.y = 1;
 	return vec;
 }
 
