@@ -154,26 +154,44 @@ bool j1Player::Update(float dt)
 {
 	MirrorSprite();
 
-	if (Player.isJumping && Player.canDJump)
+	if (!Player.godmode)
 	{
-		if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN)
+		if (Player.isJumping && Player.canDJump)
+		{
+			if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN)
 
-			DoubleJump();
+				DoubleJump();
+		}
+
+		if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+			Player.xDirection = 1, SpeedUp();
+		else if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
+			Player.xDirection = -1, SpeedUp();
+		else
+			SpeedDown();
+
+		if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN && Player.onFloor)
+		{
+			Player.isJumping = true;
+			Player.maxSpeed.x += Player.jumpSpeed.x;
+			Player.speed.x = Player.jumpSpeed.x*Player.xDirection;
+			Player.speed.y = Player.jumpSpeed.y;
+		}
 	}
-
-	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
-		Player.xDirection = 1, SpeedUp();
-	else if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
-		Player.xDirection = -1, SpeedUp();
-	else
-		SpeedDown();
-
-	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN && Player.onFloor)
+	else if (Player.godmode)
 	{
-		Player.isJumping = true;
-		Player.maxSpeed.x += Player.jumpSpeed.x;
-		Player.speed.x = Player.jumpSpeed.x*Player.xDirection;
-		Player.speed.y = Player.jumpSpeed.y;
+		if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
+			Player.position.y -= 1;					
+													
+		if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
+			Player.position.x -= 1;					  
+													  
+		if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
+			Player.position.y += 1;					
+													
+		if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+			Player.position.x += 1;
+
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
@@ -206,7 +224,25 @@ bool j1Player::Update(float dt)
 		}
 	}
 
-	Player.speed = Gravity(Player.speed);
+	if (App->input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN)
+	{
+		Player.position = Player.initPosition;
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)
+	{
+		if (Player.godmode)
+			Player.godmode = false;
+		else if (!Player.godmode)
+		{
+			Player.godmode = true;
+			Player.speed = { 0,0 };
+		}
+			
+	}
+
+	if(!Player.godmode)
+		Player.speed = Gravity(Player.speed);
 
 
 	AnimChange();
@@ -217,11 +253,6 @@ bool j1Player::Update(float dt)
 
 bool j1Player::PostUpdate()
 {
-	/*if (!isAlive)
-	{
-		App->scenechange->ChangeMap(App->scene->currentMap, App->scene->fade_time);
-	}*/
-
 	PositionCameraOnPlayer();
 
 	return true;

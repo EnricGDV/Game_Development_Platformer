@@ -28,6 +28,7 @@ struct PlayerData
 	bool				mirror;
 	bool				isJumping;
 	bool				onFloor;
+	bool                godmode = false;
 	int					xDirection;
 	iPoint				jumpSpeed;
 	iPoint				acceleration;

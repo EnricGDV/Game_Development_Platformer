@@ -180,6 +180,17 @@ bool j1Map::CleanUp()
 	}
 	data.layers.clear();
 
+	// Remove all objects
+	p2List_item<MapObjectG*>* item3;
+	item3 = data.object_groups.start;
+
+	while (item3 != NULL)
+	{
+		RELEASE(item3->data);
+		item3 = item3->next;
+	}
+	data.object_groups.clear();
+
 	// Clean up the pugui tree
 	map_file.reset();
 
