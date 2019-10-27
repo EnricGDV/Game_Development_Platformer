@@ -33,7 +33,7 @@
     <initPos x ="120" y="2200"/>
     <col w="32" h="32"/>
     <maxSpeed x="2" y="1"/>
-    <offSet x="11" y="9"/>
+    <offSet x="0" y="0"/>
     <spritesheetS name="textures/spritesheet.png"/>
     <animations>
       <animation name="angel_idle" loop="true" speed="0.03">
