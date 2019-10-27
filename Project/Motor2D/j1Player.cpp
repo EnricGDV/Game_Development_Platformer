@@ -115,6 +115,9 @@ bool j1Player::Awake(pugi::xml_node& config)
 	Player.position.x = config.child("initPos").attribute("x").as_int();
 	Player.position.y = config.child("initPos").attribute("y").as_int();
 
+	Player.initPosition.x = config.child("initPos").attribute("x").as_int();
+	Player.initPosition.y = config.child("initPos").attribute("y").as_int();
+
 	Player.collider = App->collision->AddCollider({ config.child("position").attribute("x").as_int(), config.child("position").attribute("y").as_int(), config.child("col").attribute("w").as_int(), config.child("col").attribute("h").as_int() }, COLLIDER_PLAYER, this);
 
 	return ret;
@@ -171,6 +174,36 @@ bool j1Player::Update(float dt)
 		Player.maxSpeed.x += Player.jumpSpeed.x;
 		Player.speed.x = Player.jumpSpeed.x*Player.xDirection;
 		Player.speed.y = Player.jumpSpeed.y;
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
+	{
+		if (App->scene->mapname != "map1.tmx")
+		{
+			p2SString map = "map1.tmx";
+			App->map->mapChange(&map);
+			Player.position = Player.initPosition;
+			App->scene->mapname = map;
+		}
+		else
+		{
+			Player.position = Player.initPosition;
+		}
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN)
+	{
+		if (App->scene->mapname != "map2.tmx")
+		{
+			p2SString map = "map2.tmx";
+			App->map->mapChange(&map);
+			Player.position = Player.initPosition;
+			App->scene->mapname = map;
+		}
+		else
+		{
+			Player.position = Player.initPosition;
+		}
 	}
 
 	Player.speed = Gravity(Player.speed);
@@ -408,8 +441,7 @@ void j1Player::OnCollision(Collider* c1, Collider* c2)
 		if (Player.speed.y >= 0 && c2->rect.y > c1->rect.y)
 		{
 			Player.position.y = c2->rect.y - c1->rect.h;
-			Player.isJumping = false;
-			Player.canDJump = true;
+			ArrivesFloor();
 		}
 		else if ((c2->rect.y + c2->rect.h) > c1->rect.y && c2->rect.y < c1->rect.y)
 		{
@@ -422,16 +454,13 @@ void j1Player::OnCollision(Collider* c1, Collider* c2)
 
 	if (c1->type == COLLIDER_PLAYER && c2->type == COLLIDER_WIN)
 	{
-		p2SString map = "map2.tmx";
 		Player.position = Player.initPosition;
-		App->map->mapChange(&map);
+		App->scene->ChangeScene();
 	}
 
 	if (c1->type == COLLIDER_PLAYER && c2->type == COLLIDER_ENEMY_SHOT)
 	{
-		p2SString map = "map1.tmx";
 		Player.position = Player.initPosition;
-		App->map->mapChange(&map);
 	}
 
 }

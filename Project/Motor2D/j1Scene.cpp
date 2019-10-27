@@ -64,18 +64,6 @@ bool j1Scene::Update(float dt)
 	if(App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
 		App->render->camera.x -= 5;
 
-	if (App->input->GetKey(SDL_SCANCODE_M) == KEY_DOWN)
-	{
-		if (mapname == "map1.tmx")
-		{
-			mapname = "map2.tmx";
-		}
-		else if (mapname == "map2.tmx")
-		{
-			mapname = "map1.tmx";
-		}
-		App->map->mapChange(&mapname);
-	}
 
 
 	App->map->Draw();
@@ -110,5 +98,19 @@ bool j1Scene::CleanUp()
 {
 	LOG("Freeing scene");
 
+	return true;
+}
+
+bool j1Scene::ChangeScene()
+{
+	if (mapname == "map1.tmx")
+	{
+		mapname = "map2.tmx";
+	}
+	else if (mapname == "map2.tmx")
+	{
+		mapname = "map1.tmx";
+	}
+	App->map->mapChange(&mapname);
 	return true;
 }

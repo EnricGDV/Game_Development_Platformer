@@ -34,6 +34,7 @@ public:
 
 
 	//map
+	bool ChangeScene();
 	p2SString mapname = "map1.tmx";
 
 private:
