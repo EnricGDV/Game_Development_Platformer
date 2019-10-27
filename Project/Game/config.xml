@@ -32,7 +32,7 @@
     <jumpSpeed x="0" y="20"/>
     <initPos x ="120" y="2000"/>
     <col w="32" h="32"/>
-    <maxSpeed x="3" y="1"/>
+    <maxSpeed x="2" y="1"/>
     <offSet x="11" y="9"/>
     <spritesheetS name="textures/spritesheet.png"/>
     <animations>
