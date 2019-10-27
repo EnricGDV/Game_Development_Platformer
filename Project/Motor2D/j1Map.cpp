@@ -5,6 +5,7 @@
 #include "j1Textures.h"
 #include "j1Map.h"
 #include "j1Scene.h"
+#include "j1Player.h"
 #include "ModuleCollision.h"
 #include <math.h>
 
@@ -484,8 +485,10 @@ bool j1Map::LoadObjectGroup(pugi::xml_node& node, MapObjectG* objectg)
 
 bool j1Map::mapChange(p2SString* nmap)
 {
+	App->collision->CleanUp();
 	CleanUp();
 	Load(nmap->GetString());
+	
 	return true;
 }
 

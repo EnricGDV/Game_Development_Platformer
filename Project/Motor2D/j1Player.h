@@ -38,6 +38,8 @@ struct PlayerData
 	iPoint              initPosition;
 	iPoint				offSet;
 	Collider*			collider;
+	SDL_Rect            colInit;
+
 };
 
 class j1Player : public j1Module

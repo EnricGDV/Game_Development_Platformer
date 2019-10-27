@@ -1,7 +1,7 @@
 #ifndef __ModuleCollision_H__
 #define __ModuleCollision_H__
 
-#define MAX_COLLIDERS 50
+#define MAX_COLLIDERS 200
 
 #include "j1Module.h"
 #include "SDL/include/SDL.h"
@@ -56,9 +56,11 @@ public:
 	Collider* AddCollider(SDL_Rect rect, COLLIDER_TYPE type, j1Module* callback = nullptr);
 	void DebugDraw();
 
+	Collider* colliders[MAX_COLLIDERS];
+
 private:
 
-	Collider* colliders[MAX_COLLIDERS];
+	
 	bool matrix[COLLIDER_MAX][COLLIDER_MAX];
 	bool debug = false;
 };
