@@ -55,6 +55,25 @@
         <frame height="24" width="25" y="4" x="223"/>
         <frame height="24" width="25" y="4" x="251"/>
       </animation>
+      <animation name="angel_idle_M" loop="true" speed="0.05">
+        <frame height="24" width="25" y="63" x="0"/>
+        <frame height="24" width="25" y="63" x="29"/>
+      </animation>
+      <animation name="angel_moving_M" loop="true" speed="0.05">
+        <frame height="24" width="25" y="95" x="251"/>
+        <frame height="24" width="25" y="95" x="223"/>
+        <frame height="24" width="25" y="95" x="194"/>
+      </animation>
+      <animation name="angel_jumping_M" loop="false" speed="0.05">
+        <frame height="24" width="25" y="95" x="137"/>
+        <frame height="24" width="25" y="95" x="111"/>
+        <frame height="24" width="25" y="95" x="83"/>
+      </animation>
+      <animation name="angel_falling_M" loop="false" speed="0.05">
+        <frame height="24" width="25" y="95" x="56"/>
+        <frame height="24" width="25" y="95" x="29"/>
+        <frame height="24" width="25" y="95" x="0"/>
+      </animation>
     </animations>
   </player>
   

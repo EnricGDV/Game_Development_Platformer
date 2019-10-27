@@ -62,6 +62,38 @@ bool j1Player::Awake(pugi::xml_node& config)
 			Player.angel_falling.speed = animations.attribute("speed").as_float();
 			Player.angel_falling.loop = animations.attribute("loop").as_bool();
 		}
+		if (temp == "angel_idle_M")
+		{
+			for (pugi::xml_node frame = animations.child("frame"); frame && ret; frame = frame.next_sibling("frame"))
+				Player.angel_idle_M.PushBack({ frame.attribute("x").as_int() , frame.attribute("y").as_int(), frame.attribute("width").as_int(), frame.attribute("height").as_int() });
+
+			Player.angel_idle_M.speed = animations.attribute("speed").as_float();
+			Player.angel_idle_M.loop = animations.attribute("loop").as_bool();
+		}
+		if (temp == "angel_moving_M")
+		{
+			for (pugi::xml_node frame = animations.child("frame"); frame && ret; frame = frame.next_sibling("frame"))
+				Player.angel_moving_M.PushBack({ frame.attribute("x").as_int() , frame.attribute("y").as_int(), frame.attribute("width").as_int(), frame.attribute("height").as_int() });
+
+			Player.angel_moving_M.speed = animations.attribute("speed").as_float();
+			Player.angel_moving_M.loop = animations.attribute("loop").as_bool();
+		}
+		if (temp == "angel_jumping_M")
+		{
+			for (pugi::xml_node frame = animations.child("frame"); frame && ret; frame = frame.next_sibling("frame"))
+				Player.angel_jumping_M.PushBack({ frame.attribute("x").as_int() , frame.attribute("y").as_int(), frame.attribute("width").as_int(), frame.attribute("height").as_int() });
+
+			Player.angel_jumping_M.speed = animations.attribute("speed").as_float();
+			Player.angel_jumping_M.loop = animations.attribute("loop").as_bool();
+		}
+		if (temp == "angel_falling_M")
+		{
+			for (pugi::xml_node frame = animations.child("frame"); frame && ret; frame = frame.next_sibling("frame"))
+				Player.angel_falling_M.PushBack({ frame.attribute("x").as_int() , frame.attribute("y").as_int(), frame.attribute("width").as_int(), frame.attribute("height").as_int() });
+
+			Player.angel_falling_M.speed = animations.attribute("speed").as_float();
+			Player.angel_falling_M.loop = animations.attribute("loop").as_bool();
+		}
 	}
 
 	//Player.current_animation = &Player.angel_idle;
@@ -259,25 +291,51 @@ void j1Player::DoubleJump()
 
 void j1Player::AnimChange()
 {
-	if (Player.onFloor && Player.speed.y == 0)
+	if (!Player.mirror)
 	{
-		if (Player.speed.x == 0)
+		if (Player.onFloor && Player.speed.y == 0)
 		{
-			Player.current_animation = &Player.angel_idle;
+			if (Player.speed.x == 0)
+			{
+				Player.current_animation = &Player.angel_idle;
+			}
+			else
+			{
+				Player.current_animation = &Player.angel_moving;
+			}
+		}
+		else if (Player.speed.y < 0)
+		{
+			Player.current_animation = &Player.angel_jumping;
 		}
 		else
 		{
-			Player.current_animation = &Player.angel_moving;
+			Player.current_animation = &Player.angel_falling;
 		}
-	}
-	else if (Player.speed.y < 0)
-	{
-		Player.current_animation = &Player.angel_jumping;
 	}
 	else
 	{
-		Player.current_animation = &Player.angel_falling;
+		if (Player.onFloor && Player.speed.y == 0)
+		{
+			if (Player.speed.x == 0)
+			{
+				Player.current_animation = &Player.angel_idle_M;
+			}
+			else
+			{
+				Player.current_animation = &Player.angel_moving_M;
+			}
+		}
+		else if (Player.speed.y < 0)
+		{
+			Player.current_animation = &Player.angel_jumping_M;
+		}
+		else
+		{
+			Player.current_animation = &Player.angel_falling_M;
+		}
 	}
+	
 }
 
 void j1Player::PlayerMov()
@@ -290,7 +348,7 @@ void j1Player::PlayerMov()
 void j1Player::Draw()
 {
 	if (Player.mirror)
-		App->render->Blit(graphics, Player.position.x, Player.position.y, &(Player.current_animation->GetCurrentFrame()), SDL_FLIP_NONE, -1.0);
+		App->render->Blit(graphics, Player.position.x, Player.position.y, &(Player.current_animation->GetCurrentFrame()), SDL_FLIP_HORIZONTAL, -1.0);
 	else
 		App->render->Blit(graphics, Player.position.x, Player.position.y, &(Player.current_animation->GetCurrentFrame()), SDL_FLIP_HORIZONTAL, -1.0);
 }

@@ -18,6 +18,10 @@ struct PlayerData
 	Animation			angel_moving;
 	Animation			angel_jumping;
 	Animation			angel_falling;
+	Animation			angel_idle_M;
+	Animation			angel_moving_M;
+	Animation			angel_jumping_M;
+	Animation			angel_falling_M;
 	bool				canDJump;
 	bool				isDemon;
 	bool				canDash;
