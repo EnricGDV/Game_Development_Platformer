@@ -38,6 +38,7 @@ struct PlayerData
 	iPoint              initPosition;
 	iPoint				offSet;
 	Collider*			collider;
+	SDL_Rect            colInit;
 	//SDL_Texture*		PlayerTexture;
 	
 

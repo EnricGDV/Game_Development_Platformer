@@ -119,7 +119,7 @@ bool j1Player::Awake(pugi::xml_node& config)
 	Player.initPosition.y = config.child("initPos").attribute("y").as_int();
 
 	Player.collider = App->collision->AddCollider({ config.child("position").attribute("x").as_int(), config.child("position").attribute("y").as_int(), config.child("col").attribute("w").as_int(), config.child("col").attribute("h").as_int() }, COLLIDER_PLAYER, this);
-
+	Player.colInit = { config.child("position").attribute("x").as_int(), config.child("position").attribute("y").as_int(), config.child("col").attribute("w").as_int(), config.child("col").attribute("h").as_int() };
 	return ret;
 }
 
@@ -202,6 +202,8 @@ bool j1Player::Update(float dt)
 			App->map->mapChange(&map);
 			Player.position = Player.initPosition;
 			App->scene->mapname = map;
+			App->map->DrawObjects();
+			Player.collider = App->collision->AddCollider(Player.colInit, COLLIDER_PLAYER, this);
 		}
 		else
 		{
@@ -217,6 +219,8 @@ bool j1Player::Update(float dt)
 			App->map->mapChange(&map);
 			Player.position = Player.initPosition;
 			App->scene->mapname = map;
+			App->map->DrawObjects();
+			Player.collider = App->collision->AddCollider(Player.colInit, COLLIDER_PLAYER, this);
 		}
 		else
 		{
@@ -253,7 +257,6 @@ bool j1Player::Update(float dt)
 
 bool j1Player::PostUpdate()
 {
-	PositionCameraOnPlayer();
 
 	return true;
 }
@@ -433,12 +436,6 @@ iPoint j1Player::Gravity(iPoint vec)
 	return vec;
 }
 
-bool j1Player::PositionCameraOnPlayer()
-{
-	
-	return true;
-}
-
 void j1Player::RestartPlayer()
 {
 	//Write initial values 
@@ -464,19 +461,25 @@ void j1Player::OnCollision(Collider* c1, Collider* c2)
 
 	else if (c1->type == COLLIDER_PLAYER && c2->type == COLLIDER_ENEMY)
 	{
-		p2SString map;
-		if (App->scene->mapname != "map2.tmx")
+		if (App->scene->mapname == "map1.tmx")
 		{
-			map = "map2.tmx";
+			p2SString map = "map2.tmx";
+			App->map->mapChange(&map);
+			Player.position = Player.initPosition;
+			App->scene->mapname = map;
+			App->map->DrawObjects();
+			Player.collider = App->collision->AddCollider(Player.colInit, COLLIDER_PLAYER, this);
 		}
-		else if (App->scene->mapname != "map1.tmx")
+		else if (App->scene->mapname == "map2.tmx")
 		{
-			map = "map1.tmx";
-			
+			p2SString map = "map1.tmx";
+			App->map->mapChange(&map);
+			Player.position = Player.initPosition;
+			App->scene->mapname = map;
+			App->map->DrawObjects();
+			Player.collider = App->collision->AddCollider(Player.colInit, COLLIDER_PLAYER, this);
 		}
-		App->scene->mapname = map;
-		App->map->mapChange(&map);
-		Player.position = Player.initPosition;
+		
 	}
 
 	else if (c1->type == COLLIDER_PLAYER && c2->type == COLLIDER_ENEMY_SHOT)

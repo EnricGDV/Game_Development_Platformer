@@ -5,6 +5,7 @@
 #include "j1Textures.h"
 #include "j1Map.h"
 #include "j1Scene.h"
+#include "j1Player.h"
 #include "ModuleCollision.h"
 #include <math.h>
 
@@ -312,8 +313,8 @@ bool j1Map::LoadMap()
 		data.tile_height = map.attribute("tileheight").as_int();
 		p2SString bg_color(map.attribute("backgroundcolor").as_string());
 
-		data.background_color.r = 0;
-		data.background_color.g = 0;
+		data.background_color.r = 150;
+		data.background_color.g = 255;
 		data.background_color.b = 0;
 		data.background_color.a = 0;
 
@@ -484,8 +485,10 @@ bool j1Map::LoadObjectGroup(pugi::xml_node& node, MapObjectG* objectg)
 
 bool j1Map::mapChange(p2SString* nmap)
 {
+	App->collision->CleanUp();
 	CleanUp();
 	Load(nmap->GetString());
+	
 	return true;
 }
 

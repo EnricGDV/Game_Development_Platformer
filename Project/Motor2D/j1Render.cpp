@@ -70,8 +70,18 @@ bool j1Render::PreUpdate()
 
 bool j1Render::Update(float dt)
 {
-	camera.x = -(App->player->Player.position.x + speed.x) + App->win->width / 2;
-	camera.y = -(App->player->Player.position.y + speed.y) + App->win->height / 2;
+	if (App->player->Player.position.x >= 115)
+	{
+		camera.x = -(App->player->Player.position.x + speed.x) + App->win->width / 2;
+	}
+	
+
+	
+	if (App->player->Player.position.y <= 2175)
+	{
+		camera.y = -(App->player->Player.position.y + speed.y) + App->win->height / 2;
+	}
+	
 
 
 
