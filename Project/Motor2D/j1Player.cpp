@@ -108,8 +108,8 @@ bool j1Player::Awake(pugi::xml_node& config)
 	Player.acceleration.x = config.child("acceleration").attribute("x").as_int();
 	Player.acceleration.y = config.child("acceleration").attribute("y").as_int();
 
-	Player.offSet.x = config.child("offPath").attribute("x").as_int();
-	Player.offSet.y = config.child("offPath").attribute("y").as_int();
+	Player.offSet.x = config.child("offSet").attribute("x").as_int();
+	Player.offSet.y = config.child("offSet").attribute("y").as_int();
 
 
 	Player.position.x = config.child("initPos").attribute("x").as_int();
@@ -126,6 +126,7 @@ bool j1Player::Awake(pugi::xml_node& config)
 bool j1Player::Start()
 {
 	Player.speed = { 0,0 };
+	Player.position = Player.initPosition;
 
 	graphics = App->tex->Load(spritesheetN.GetString());
 	if (graphics == nullptr)
