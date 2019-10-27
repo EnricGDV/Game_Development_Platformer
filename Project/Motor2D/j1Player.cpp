@@ -180,16 +180,16 @@ bool j1Player::Update(float dt)
 	else if (Player.godmode)
 	{
 		if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
-			Player.position.y -= 1;					
+			Player.position.y -= 2;					
 													
 		if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
-			Player.position.x -= 1;					  
+			Player.position.x -= 2;					  
 													  
 		if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
-			Player.position.y += 1;					
+			Player.position.y += 2;					
 													
 		if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
-			Player.position.x += 1;
+			Player.position.x += 2;
 
 	}
 
@@ -434,16 +434,13 @@ iPoint j1Player::Gravity(iPoint vec)
 
 bool j1Player::PositionCameraOnPlayer()
 {
-	/*App->render->camera.x = Player.position.x - App->render->camera.w / 2;
-	if (App->render->camera.x < 0)App->render->camera.x = 0;
-	App->render->camera.y = Player.position.y - App->render->camera.h / 3;
-	if (App->render->camera.y + App->win->height > App->map->data.height*App->map->data.tile_height)App->render->camera.y = App->map->data.height*App->map->data.tile_height - App->win->height;*/
+	
 	return true;
 }
 
 void j1Player::RestartPlayer()
 {
-	//Escribir valores iniciales del mundo
+	//Write initial values 
 }
 
 void j1Player::OnCollision(Collider* c1, Collider* c2)

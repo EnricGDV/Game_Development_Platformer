@@ -1,15 +1,19 @@
-<!-- Save game for the game -->
-
+<?xml version="1.0"?>
 <game_state>
-
-  <renderer>
-    <camera x="0" y="0"/>
-  </renderer>
-  <player>
-    <position x="150" y="2000" />
-    <speed x="0" y="0" />
-    <col width="32" height="32" x="150" y="2000" />
-    <onFloor value="true" />
-  </player>
-
+	<input />
+	<window />
+	<textures />
+	<audio />
+	<map />
+	<scene />
+	<player>
+		<position x="120" y="2229" />
+		<speed x="0" y="1" />
+		<col width="32" height="32" x="120" y="2229" />
+		<onFloor value="false" />
+	</player>
+	<:anonymous />
+	<renderer>
+		<camera x="392" y="-1846" />
+	</renderer>
 </game_state>
