@@ -38,11 +38,6 @@ struct PlayerData
 	iPoint              initPosition;
 	iPoint				offSet;
 	Collider*			collider;
-	//SDL_Texture*		PlayerTexture;
-	
-
-
-	//void LoadPushbacks();
 };
 
 class j1Player : public j1Module
@@ -82,10 +77,6 @@ public:
 	void SpeedUp();
 
 	void SpeedDown();
-
-	void RestartPlayer();
-
-	bool PositionCameraOnPlayer();
 
 	void ArrivesFloor();
 
