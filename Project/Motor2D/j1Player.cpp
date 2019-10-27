@@ -125,7 +125,6 @@ bool j1Player::Awake(pugi::xml_node& config)
 
 bool j1Player::Start()
 {
-	//Player.LoadPushbacks();
 	Player.speed = { 0,0 };
 
 	graphics = App->tex->Load(spritesheetN.GetString());
@@ -159,7 +158,6 @@ bool j1Player::Update(float dt)
 		if (Player.isJumping && Player.canDJump)
 		{
 			if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN)
-
 				DoubleJump();
 		}
 
@@ -175,7 +173,8 @@ bool j1Player::Update(float dt)
 			Player.isJumping = true;
 			Player.maxSpeed.x += Player.jumpSpeed.x;
 			Player.speed.x = Player.jumpSpeed.x*Player.xDirection;
-			Player.speed.y = Player.jumpSpeed.y;
+			Player.speed.y = -Player.jumpSpeed.y;
+			Player.onFloor = false;
 		}
 	}
 	else if (Player.godmode)
@@ -248,7 +247,6 @@ bool j1Player::Update(float dt)
 	AnimChange();
 	PlayerMov();
 	Draw();
-	Player.onFloor = false;
 	return true;
 }
 
@@ -345,7 +343,7 @@ void j1Player::ArrivesFloor()
 
 	Player.angel_falling.resetLoops(0);
 	Player.angel_falling_M.resetLoops(0);
-	Player.canDJump = false;
+	Player.canDJump = true;
 	Player.onFloor = true;
 	Player.angel_jumping.Reset();
 }
@@ -356,7 +354,7 @@ void j1Player::DoubleJump()
 	Player.isJumping = true;
 	Player.maxSpeed.x += Player.jumpSpeed.x;
 	Player.speed.x = Player.jumpSpeed.x*Player.xDirection;
-	Player.speed.y = Player.jumpSpeed.y;
+	Player.speed.y = -Player.jumpSpeed.y;
 }
 
 void j1Player::AnimChange()
@@ -425,12 +423,12 @@ void j1Player::Draw()
 
 iPoint j1Player::Gravity(iPoint vec)
 {
-	//vec.y += Player.acceleration.y;
-	//if (vec.y > Player.maxSpeed.y)
-	//{
-	//	vec.y = Player.maxSpeed.y;
-	//}
-	vec.y = 1;
+	vec.y += Player.acceleration.y;
+	if (vec.y > Player.maxSpeed.y)
+	{
+		vec.y = Player.maxSpeed.y;
+	}
+
 	return vec;
 }
 
@@ -443,31 +441,10 @@ bool j1Player::PositionCameraOnPlayer()
 	return true;
 }
 
-//void PlayerData::LoadPushbacks()
-//{
-//
-//}
-
 void j1Player::RestartPlayer()
 {
 	//Escribir valores iniciales del mundo
 }
-
-//void j1Player::BecomeGrounded()
-//{
-//	if (isJumping)
-//	{
-//		isJumping = false;
-//		maxSpeed.x -= jumpForce.x;
-//	}
-//
-//	if (Current_Animation == &falling)
-//		AddSFX(5, 0);
-//
-//	canDash = true;
-//	grounded = true;
-//	jumping_up.Reset();
-//}
 
 void j1Player::OnCollision(Collider* c1, Collider* c2)
 {
@@ -487,13 +464,24 @@ void j1Player::OnCollision(Collider* c1, Collider* c2)
 		}
 	}
 
-	if (c1->type == COLLIDER_PLAYER && c2->type == COLLIDER_WIN)
+	else if (c1->type == COLLIDER_PLAYER && c2->type == COLLIDER_ENEMY)
 	{
+		p2SString map;
+		if (App->scene->mapname != "map2.tmx")
+		{
+			map = "map2.tmx";
+		}
+		else if (App->scene->mapname != "map1.tmx")
+		{
+			map = "map1.tmx";
+			
+		}
+		App->scene->mapname = map;
+		App->map->mapChange(&map);
 		Player.position = Player.initPosition;
-		App->scene->ChangeScene();
 	}
 
-	if (c1->type == COLLIDER_PLAYER && c2->type == COLLIDER_ENEMY_SHOT)
+	else if (c1->type == COLLIDER_PLAYER && c2->type == COLLIDER_ENEMY_SHOT)
 	{
 		Player.position = Player.initPosition;
 	}

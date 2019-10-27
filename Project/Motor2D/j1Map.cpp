@@ -98,7 +98,7 @@ void j1Map::DrawObjects()
 		{
 			for (int j = 0; j < objectg->num_objects; j++)
 			{
-				App->collision->AddCollider(objectg->objects[j], COLLIDER_WIN);
+				App->collision->AddCollider(objectg->objects[j], COLLIDER_ENEMY);
 			}
 		}
 		else if (objectg->name == "Death")
