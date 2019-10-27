@@ -112,6 +112,9 @@ bool j1Player::Awake(pugi::xml_node& config)
 	Player.offSet.y = config.child("offPath").attribute("y").as_int();
 
 
+	Player.position.x = config.child("initPos").attribute("x").as_int();
+	Player.position.y = config.child("initPos").attribute("y").as_int();
+
 	Player.collider = App->collision->AddCollider({ config.child("position").attribute("x").as_int(), config.child("position").attribute("y").as_int(), config.child("col").attribute("w").as_int(), config.child("col").attribute("h").as_int() }, COLLIDER_PLAYER, this);
 
 	return ret;
@@ -120,7 +123,6 @@ bool j1Player::Awake(pugi::xml_node& config)
 bool j1Player::Start()
 {
 	//Player.LoadPushbacks();
-	Player.position = { 0,0 };
 	Player.speed = { 0,0 };
 
 	graphics = App->tex->Load(spritesheetN.GetString());
@@ -403,12 +405,13 @@ void j1Player::OnCollision(Collider* c1, Collider* c2)
 {
 	if (c1->type == COLLIDER_PLAYER && c2->type == COLLIDER_WALL)
 	{
-		if (Player.speed.y <= 0 && (c2->rect.y + c2->rect.h) < c1->rect.y)
+		if (Player.speed.y >= 0 && c2->rect.y > c1->rect.y)
 		{
-			Player.position.y = c2->rect.y + c2->rect.h + 1;
+			Player.position.y = c2->rect.y - c1->rect.h;
 			Player.isJumping = false;
+			Player.canDJump = true;
 		}
-		if ((c2->rect.y + c2->rect.h) > c1->rect.y && c2->rect.y < c1->rect.y)
+		else if ((c2->rect.y + c2->rect.h) > c1->rect.y && c2->rect.y < c1->rect.y)
 		{
 			if (Player.speed.x > 0)
 				Player.position.x = c2->rect.x - 1;
@@ -420,12 +423,14 @@ void j1Player::OnCollision(Collider* c1, Collider* c2)
 	if (c1->type == COLLIDER_PLAYER && c2->type == COLLIDER_WIN)
 	{
 		p2SString map = "map2.tmx";
+		Player.position = Player.initPosition;
 		App->map->mapChange(&map);
 	}
 
 	if (c1->type == COLLIDER_PLAYER && c2->type == COLLIDER_ENEMY_SHOT)
 	{
 		p2SString map = "map1.tmx";
+		Player.position = Player.initPosition;
 		App->map->mapChange(&map);
 	}
 

@@ -34,6 +34,7 @@ struct PlayerData
 	iPoint				maxSpeed;
 	iPoint				speed;
 	iPoint				position;
+	iPoint              initPosition;
 	iPoint				offSet;
 	Collider*			collider;
 	//SDL_Texture*		PlayerTexture;
