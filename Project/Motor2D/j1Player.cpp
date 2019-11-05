@@ -343,13 +343,13 @@ void j1Player::ArrivesFloor()
 	{
 		Player.isJumping = false;
 		Player.maxSpeed.x -= Player.jumpSpeed.x;
-		Player.angel_jumping.resetLoops(0);
-		Player.angel_jumping_M.resetLoops(0);
+		Player.angel_jumping.Reset();
+		Player.angel_jumping_M.Reset();
 	}
 
 
-	Player.angel_falling.resetLoops(0);
-	Player.angel_falling_M.resetLoops(0);
+	Player.angel_falling.Reset();
+	Player.angel_falling_M.Reset();
 	Player.canDJump = true;
 	Player.onFloor = true;
 	Player.angel_jumping.Reset();
@@ -390,7 +390,7 @@ void j1Player::AnimChange()
 	}
 	else
 	{
-		if (Player.onFloor && Player.speed.y == 0)
+		if (Player.onFloor)
 		{
 			if (Player.speed.x == 0)
 			{
