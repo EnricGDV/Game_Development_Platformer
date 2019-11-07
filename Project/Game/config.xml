@@ -37,6 +37,10 @@
     <offSet x="0" y="0"/>
     <spritesheetS name="textures/spritesheet.png"/>
     <animations>
+      <animation name="demon_idle" loop="true" speed="0.03">
+        <frame height="24" width="25" y="307" x="0"/>
+        <frame height="24" width="25" y="307" x="66"/>
+      </animation>
       <animation name="angel_idle" loop="true" speed="0.03">
         <frame height="24" width="25" y="131" x="0"/>
         <frame height="24" width="25" y="131" x="29"/>

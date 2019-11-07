@@ -30,6 +30,14 @@ bool j1Player::Awake(pugi::xml_node& config)
 	for (animations = config.child("animations").first_child(); animations && ret; animations = animations.next_sibling("animation"))
 	{
 		p2SString temp(animations.attribute("name").as_string());
+		if (temp == "demon_idle")
+		{
+			for (pugi::xml_node frame = animations.child("frame"); frame && ret; frame = frame.next_sibling("frame"))
+				Player.demon_idle.PushBack({ frame.attribute("x").as_int() , frame.attribute("y").as_int(), frame.attribute("width").as_int(), frame.attribute("height").as_int() });
+
+			Player.demon_idle.speed = animations.attribute("speed").as_float();
+			Player.demon_idle.loop = animations.attribute("loop").as_bool();
+		}
 		if (temp == "angel_idle")
 		{
 			for (pugi::xml_node frame = animations.child("frame"); frame && ret; frame = frame.next_sibling("frame"))
@@ -155,6 +163,15 @@ bool j1Player::PreUpdate()
 bool j1Player::Update(float dt)
 {
 	MirrorSprite();
+	
+	if ((App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN) && Player.isDemon)
+	{
+		Player.isDemon = false;
+	}
+	else if ((App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN) && !Player.isDemon)
+	{
+		Player.isDemon = true;
+	}
 
 	if (!Player.godmode)
 	{
@@ -366,50 +383,58 @@ void j1Player::DoubleJump()
 
 void j1Player::AnimChange()
 {
-	if (!Player.mirror)
+	if (!Player.isDemon)
 	{
-		if (Player.onFloor)
+		if (!Player.mirror)
 		{
-			if (Player.speed.x == 0)
+			if (Player.onFloor)
 			{
-				Player.current_animation = &Player.angel_idle;
+				if (Player.speed.x == 0)
+				{
+					Player.current_animation = &Player.angel_idle;
+				}
+				else
+				{
+					Player.current_animation = &Player.angel_moving;
+				}
+			}
+			else if (Player.speed.y < 0)
+			{
+				Player.current_animation = &Player.angel_jumping;
 			}
 			else
 			{
-				Player.current_animation = &Player.angel_moving;
+				Player.current_animation = &Player.angel_falling;
 			}
-		}
-		else if (Player.speed.y < 0)
-		{
-			Player.current_animation = &Player.angel_jumping;
 		}
 		else
 		{
-			Player.current_animation = &Player.angel_falling;
+			if (Player.onFloor)
+			{
+				if (Player.speed.x == 0)
+				{
+					Player.current_animation = &Player.angel_idle_M;
+				}
+				else
+				{
+					Player.current_animation = &Player.angel_moving_M;
+				}
+			}
+			else if (Player.speed.y < 0)
+			{
+				Player.current_animation = &Player.angel_jumping_M;
+			}
+			else
+			{
+				Player.current_animation = &Player.angel_falling_M;
+			}
 		}
 	}
 	else
 	{
-		if (Player.onFloor)
-		{
-			if (Player.speed.x == 0)
-			{
-				Player.current_animation = &Player.angel_idle_M;
-			}
-			else
-			{
-				Player.current_animation = &Player.angel_moving_M;
-			}
-		}
-		else if (Player.speed.y < 0)
-		{
-			Player.current_animation = &Player.angel_jumping_M;
-		}
-		else
-		{
-			Player.current_animation = &Player.angel_falling_M;
-		}
+		Player.current_animation = &Player.demon_idle;
 	}
+	
 	
 }
 
