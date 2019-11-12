@@ -38,8 +38,42 @@
     <spritesheetS name="textures/spritesheet.png"/>
     <animations>
       <animation name="demon_idle" loop="true" speed="0.03">
-        <frame height="24" width="25" y="307" x="0"/>
-        <frame height="24" width="25" y="307" x="66"/>
+        <frame height="26" width="26" y="210" x="0"/>
+        <frame height="26" width="26" y="210" x="66"/>
+      </animation>
+      <animation name="demon_moving" loop="true" speed="0.04">
+        <frame height="26" width="26" y="282" x="134"/>
+        <frame height="26" width="26" y="282" x="165"/>
+        <frame height="26" width="26" y="282" x="200"/>
+      </animation>
+      <animation name="demon_jumping" loop="false" speed="0.03">
+        <frame height="26" width="26" y="282" x="267"/>
+        <frame height="26" width="26" y="282" x="299"/>
+        <frame height="26" width="26" y="282" x="0"/>
+      </animation>
+      <animation name="demon_falling" loop="false" speed="0.03">
+        <frame height="26" width="26" y="282" x="35"/>
+        <frame height="26" width="26" y="282" x="67"/>
+        <frame height="26" width="26" y="282" x="101"/>
+      </animation>
+      <animation name="demon_idle_M" loop="true" speed="0.03">
+        <frame height="26" width="26" y="316" x="66"/>
+        <frame height="26" width="26" y="316" x="0"/>
+      </animation>
+      <animation name="demon_moving_M" loop="true" speed="0.04">
+        <frame height="26" width="26" y="388" x="163"/>
+        <frame height="26" width="26" y="388" x="130"/>
+        <frame height="26" width="26" y="388" x="97"/>
+      </animation>
+      <animation name="demon_jumping_M" loop="false" speed="0.03">
+        <frame height="26" width="26" y="388" x="33"/>
+        <frame height="26" width="26" y="388" x="0"/>
+        <frame height="26" width="26" y="388" x="295"/>
+      </animation>
+      <animation name="demon_falling_M" loop="false" speed="0.03">
+        <frame height="26" width="26" y="388" x="262"/>
+        <frame height="26" width="26" y="388" x="230"/>
+        <frame height="26" width="26" y="388" x="197"/>
       </animation>
       <animation name="angel_idle" loop="true" speed="0.03">
         <frame height="24" width="25" y="131" x="0"/>

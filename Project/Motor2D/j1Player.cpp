@@ -38,6 +38,62 @@ bool j1Player::Awake(pugi::xml_node& config)
 			Player.demon_idle.speed = animations.attribute("speed").as_float();
 			Player.demon_idle.loop = animations.attribute("loop").as_bool();
 		}
+		if (temp == "demon_moving")
+		{
+			for (pugi::xml_node frame = animations.child("frame"); frame && ret; frame = frame.next_sibling("frame"))
+				Player.demon_moving.PushBack({ frame.attribute("x").as_int() , frame.attribute("y").as_int(), frame.attribute("width").as_int(), frame.attribute("height").as_int() });
+
+			Player.demon_moving.speed = animations.attribute("speed").as_float();
+			Player.demon_moving.loop = animations.attribute("loop").as_bool();
+		}
+		if (temp == "demon_jumping")
+		{
+			for (pugi::xml_node frame = animations.child("frame"); frame && ret; frame = frame.next_sibling("frame"))
+				Player.demon_jumping.PushBack({ frame.attribute("x").as_int() , frame.attribute("y").as_int(), frame.attribute("width").as_int(), frame.attribute("height").as_int() });
+
+			Player.demon_jumping.speed = animations.attribute("speed").as_float();
+			Player.demon_jumping.loop = animations.attribute("loop").as_bool();
+		}
+		if (temp == "demon_falling")
+		{
+			for (pugi::xml_node frame = animations.child("frame"); frame && ret; frame = frame.next_sibling("frame"))
+				Player.demon_falling.PushBack({ frame.attribute("x").as_int() , frame.attribute("y").as_int(), frame.attribute("width").as_int(), frame.attribute("height").as_int() });
+
+			Player.demon_falling.speed = animations.attribute("speed").as_float();
+			Player.demon_falling.loop = animations.attribute("loop").as_bool();
+		}
+		if (temp == "demon_idle_M")
+		{
+			for (pugi::xml_node frame = animations.child("frame"); frame && ret; frame = frame.next_sibling("frame"))
+				Player.demon_idle_M.PushBack({ frame.attribute("x").as_int() , frame.attribute("y").as_int(), frame.attribute("width").as_int(), frame.attribute("height").as_int() });
+
+			Player.demon_idle_M.speed = animations.attribute("speed").as_float();
+			Player.demon_idle_M.loop = animations.attribute("loop").as_bool();
+		}
+		if (temp == "demon_moving_M")
+		{
+			for (pugi::xml_node frame = animations.child("frame"); frame && ret; frame = frame.next_sibling("frame"))
+				Player.demon_moving_M.PushBack({ frame.attribute("x").as_int() , frame.attribute("y").as_int(), frame.attribute("width").as_int(), frame.attribute("height").as_int() });
+
+			Player.demon_moving_M.speed = animations.attribute("speed").as_float();
+			Player.demon_moving_M.loop = animations.attribute("loop").as_bool();
+		}
+		if (temp == "demon_jumping_M")
+		{
+			for (pugi::xml_node frame = animations.child("frame"); frame && ret; frame = frame.next_sibling("frame"))
+				Player.demon_jumping_M.PushBack({ frame.attribute("x").as_int() , frame.attribute("y").as_int(), frame.attribute("width").as_int(), frame.attribute("height").as_int() });
+
+			Player.demon_jumping_M.speed = animations.attribute("speed").as_float();
+			Player.demon_jumping_M.loop = animations.attribute("loop").as_bool();
+		}
+		if (temp == "demon_falling_M")
+		{
+			for (pugi::xml_node frame = animations.child("frame"); frame && ret; frame = frame.next_sibling("frame"))
+				Player.demon_falling_M.PushBack({ frame.attribute("x").as_int() , frame.attribute("y").as_int(), frame.attribute("width").as_int(), frame.attribute("height").as_int() });
+
+			Player.demon_falling_M.speed = animations.attribute("speed").as_float();
+			Player.demon_falling_M.loop = animations.attribute("loop").as_bool();
+		}
 		if (temp == "angel_idle")
 		{
 			for (pugi::xml_node frame = animations.child("frame"); frame && ret; frame = frame.next_sibling("frame"))
@@ -430,9 +486,52 @@ void j1Player::AnimChange()
 			}
 		}
 	}
-	else
+	else if(Player.isDemon)
 	{
-		Player.current_animation = &Player.demon_idle;
+		if (!Player.mirror)
+		{
+			if (Player.onFloor)
+			{
+				if (Player.speed.x == 0)
+				{
+					Player.current_animation = &Player.demon_idle;
+				}
+				else
+				{
+					Player.current_animation = &Player.demon_moving;
+				}
+			}
+			else if (Player.speed.y < 0)
+			{
+				Player.current_animation = &Player.demon_jumping;
+			}
+			else
+			{
+				Player.current_animation = &Player.demon_falling;
+			}
+		}
+		else
+		{
+			if (Player.onFloor)
+			{
+				if (Player.speed.x == 0)
+				{
+					Player.current_animation = &Player.demon_idle_M;
+				}
+				else
+				{
+					Player.current_animation = &Player.demon_moving_M;
+				}
+			}
+			else if (Player.speed.y < 0)
+			{
+				Player.current_animation = &Player.demon_jumping_M;
+			}
+			else
+			{
+				Player.current_animation = &Player.demon_falling_M;
+			}
+		}
 	}
 	
 	
