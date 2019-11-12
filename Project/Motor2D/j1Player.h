@@ -40,6 +40,7 @@ struct PlayerData
 	int					xDirection;
 	int                 map;
 	int                 savedmap;
+	int				dashForce;
 	iPoint				jumpSpeed;
 	iPoint				acceleration;
 	iPoint				maxSpeed;
@@ -79,6 +80,8 @@ public:
 	bool Clean();
 
 	void DoubleJump();
+
+	void Dash();
 
 	void MirrorSprite();
 

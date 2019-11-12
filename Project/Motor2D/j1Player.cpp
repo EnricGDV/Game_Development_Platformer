@@ -142,22 +142,22 @@ bool j1Player::Awake(pugi::xml_node& config)
 			Player.angel_moving_M.speed = animations.attribute("speed").as_float();
 			Player.angel_moving_M.loop = animations.attribute("loop").as_bool();
 		}
-		if (temp == "angel_jumping_M")
-		{
-			for (pugi::xml_node frame = animations.child("frame"); frame && ret; frame = frame.next_sibling("frame"))
-				Player.angel_jumping_M.PushBack({ frame.attribute("x").as_int() , frame.attribute("y").as_int(), frame.attribute("width").as_int(), frame.attribute("height").as_int() });
+if (temp == "angel_jumping_M")
+{
+	for (pugi::xml_node frame = animations.child("frame"); frame && ret; frame = frame.next_sibling("frame"))
+		Player.angel_jumping_M.PushBack({ frame.attribute("x").as_int() , frame.attribute("y").as_int(), frame.attribute("width").as_int(), frame.attribute("height").as_int() });
 
-			Player.angel_jumping_M.speed = animations.attribute("speed").as_float();
-			Player.angel_jumping_M.loop = animations.attribute("loop").as_bool();
-		}
-		if (temp == "angel_falling_M")
-		{
-			for (pugi::xml_node frame = animations.child("frame"); frame && ret; frame = frame.next_sibling("frame"))
-				Player.angel_falling_M.PushBack({ frame.attribute("x").as_int() , frame.attribute("y").as_int(), frame.attribute("width").as_int(), frame.attribute("height").as_int() });
+	Player.angel_jumping_M.speed = animations.attribute("speed").as_float();
+	Player.angel_jumping_M.loop = animations.attribute("loop").as_bool();
+}
+if (temp == "angel_falling_M")
+{
+	for (pugi::xml_node frame = animations.child("frame"); frame && ret; frame = frame.next_sibling("frame"))
+		Player.angel_falling_M.PushBack({ frame.attribute("x").as_int() , frame.attribute("y").as_int(), frame.attribute("width").as_int(), frame.attribute("height").as_int() });
 
-			Player.angel_falling_M.speed = animations.attribute("speed").as_float();
-			Player.angel_falling_M.loop = animations.attribute("loop").as_bool();
-		}
+	Player.angel_falling_M.speed = animations.attribute("speed").as_float();
+	Player.angel_falling_M.loop = animations.attribute("loop").as_bool();
+}
 	}
 
 	//Player.current_animation = &Player.angel_idle;
@@ -175,6 +175,7 @@ bool j1Player::Awake(pugi::xml_node& config)
 	Player.offSet.x = config.child("offSet").attribute("x").as_int();
 	Player.offSet.y = config.child("offSet").attribute("y").as_int();
 
+	Player.dashForce = config.child("dashForce").attribute("x").as_int();
 
 	Player.position.x = config.child("initPos").attribute("x").as_int();
 	Player.position.y = config.child("initPos").attribute("y").as_int();
@@ -219,7 +220,7 @@ bool j1Player::PreUpdate()
 bool j1Player::Update(float dt)
 {
 	MirrorSprite();
-	
+
 	if ((App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN) && Player.isDemon)
 	{
 		Player.isDemon = false;
@@ -231,10 +232,21 @@ bool j1Player::Update(float dt)
 
 	if (!Player.godmode)
 	{
-		if (Player.isJumping && Player.canDJump)
+		if (Player.isDemon)
 		{
-			if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN)
-				DoubleJump();
+			Player.canDJump = false;
+		}
+		else
+		{
+			Player.canDash = false;
+		}
+		if ((Player.canDash) && (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN))
+		{
+			Dash();
+		}
+		if ((Player.isJumping && Player.canDJump) && (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN))
+		{
+			DoubleJump();
 		}
 
 		if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
@@ -424,6 +436,7 @@ void j1Player::ArrivesFloor()
 	Player.angel_falling.Reset();
 	Player.angel_falling_M.Reset();
 	Player.canDJump = true;
+	Player.canDash = true;
 	Player.onFloor = true;
 	Player.angel_jumping.Reset();
 }
@@ -435,6 +448,16 @@ void j1Player::DoubleJump()
 	Player.maxSpeed.x += Player.jumpSpeed.x;
 	Player.speed.x = Player.jumpSpeed.x*Player.xDirection;
 	Player.speed.y = -Player.jumpSpeed.y;
+}
+
+void j1Player::Dash()
+{
+	if (!Player.mirror)
+		Player.position.x += Player.dashForce;
+	else
+		Player.position.x -= Player.dashForce;
+	
+	Player.canDash = false;
 }
 
 void j1Player::AnimChange()
