@@ -29,13 +29,13 @@
 
   <player>
     <acceleration x="1" y="1"/>
-    <jumpSpeed x="0" y="22"/>
-    <initPos x ="120" y="2000"/>
+    <jumpSpeed x="1" y="22"/>
+    <initPos x ="120" y="2150"/>
     <col w="32" h="32"/>
     <map value= "1"/>
     <maxSpeed x="1" y="2"/>
     <offSet x="0" y="0"/>
-    <dashForce x="125"/>
+    <dashForce x="20"/>
     <spritesheetS name="textures/spritesheet.png"/>
     <animations>
       <animation name="demon_idle" loop="true" speed="0.03">

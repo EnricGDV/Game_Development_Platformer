@@ -204,7 +204,11 @@ bool j1Player::Start()
 	isAlive = true;
 
 	Player.isJumping = false;
-	Player.canDash = true;
+	Player.canDash = false;
+	Player.canDJump = true;
+
+	Player.iMaxSpeed = Player.maxSpeed;
+	Player.iSpeed = Player.speed;
 
 	Player.current_animation = &Player.angel_idle;
 
@@ -288,6 +292,7 @@ bool j1Player::Update(float dt)
 			p2SString map = "map1.tmx";
 			App->map->mapChange(&map);
 			Player.position = Player.initPosition;
+			ResetPlayer();
 			App->scene->mapname = map;
 			App->map->DrawObjects();
 			Player.collider = App->collision->AddCollider(Player.colInit, COLLIDER_PLAYER, this);
@@ -295,6 +300,7 @@ bool j1Player::Update(float dt)
 		else
 		{
 			Player.position = Player.initPosition;
+			ResetPlayer();
 		}
 	}
 
@@ -305,6 +311,7 @@ bool j1Player::Update(float dt)
 			p2SString map = "map2.tmx";
 			App->map->mapChange(&map);
 			Player.position = Player.initPosition;
+			ResetPlayer();
 			App->scene->mapname = map;
 			App->map->DrawObjects();
 			Player.collider = App->collision->AddCollider(Player.colInit, COLLIDER_PLAYER, this);
@@ -312,6 +319,7 @@ bool j1Player::Update(float dt)
 		else
 		{
 			Player.position = Player.initPosition;
+			ResetPlayer();
 		}
 	}
 
@@ -432,7 +440,7 @@ void j1Player::ArrivesFloor()
 		Player.angel_jumping_M.Reset();
 	}
 
-
+	Player.maxSpeed = Player.iMaxSpeed;
 	Player.angel_falling.Reset();
 	Player.angel_falling_M.Reset();
 	Player.canDJump = true;
@@ -445,8 +453,8 @@ void j1Player::DoubleJump()
 {
 	Player.canDJump = false;
 	Player.isJumping = true;
-	Player.maxSpeed.x += Player.jumpSpeed.x;
-	Player.speed.x = Player.jumpSpeed.x*Player.xDirection;
+	//Player.maxSpeed.x += Player.jumpSpeed.x;
+	//Player.speed.x = Player.jumpSpeed.x*Player.xDirection;
 	Player.speed.y = -Player.jumpSpeed.y;
 }
 
@@ -581,6 +589,14 @@ iPoint j1Player::Gravity(iPoint vec)
 	}
 
 	return vec;
+}
+
+void j1Player::ResetPlayer()
+{
+	Player.maxSpeed = Player.iMaxSpeed;
+	Player.speed = Player.iSpeed;
+	Player.canDash = true;
+	Player.canDJump = true;
 }
 
 void j1Player::OnCollision(Collider* c1, Collider* c2)
