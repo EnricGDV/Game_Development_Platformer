@@ -287,22 +287,18 @@ bool j1Player::Update(float dt)
 
 	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
 	{
+
 		if (App->scene->mapname != "map1.tmx")
 		{
 			p2SString map = "map1.tmx";
 			App->map->mapChange(&map);
-			Player.position = Player.initPosition;
-			ResetPlayer();
 			App->scene->mapname = map;
 			App->map->DrawObjects();
 			Player.collider = App->collision->AddCollider(Player.colInit, COLLIDER_PLAYER, this);
 		}
-		else
-		{
-			Player.position = Player.initPosition;
-			ResetPlayer();
-		}
+		ResetPlayer();
 	}
+	
 
 	if (App->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN)
 	{
@@ -310,17 +306,11 @@ bool j1Player::Update(float dt)
 		{
 			p2SString map = "map2.tmx";
 			App->map->mapChange(&map);
-			Player.position = Player.initPosition;
-			ResetPlayer();
 			App->scene->mapname = map;
 			App->map->DrawObjects();
 			Player.collider = App->collision->AddCollider(Player.colInit, COLLIDER_PLAYER, this);
 		}
-		else
-		{
-			Player.position = Player.initPosition;
-			ResetPlayer();
-		}
+		ResetPlayer();
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN)
@@ -595,8 +585,11 @@ void j1Player::ResetPlayer()
 {
 	Player.maxSpeed = Player.iMaxSpeed;
 	Player.speed = Player.iSpeed;
-	Player.canDash = true;
+	Player.position = Player.initPosition;
+	Player.canDash = false;
 	Player.canDJump = true;
+	Player.isDemon = false;
+	Player.current_animation = &Player.angel_falling;
 }
 
 void j1Player::OnCollision(Collider* c1, Collider* c2)
