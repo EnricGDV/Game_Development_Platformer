@@ -113,6 +113,10 @@ public:
 private:
 
 	p2SString			spritesheetN;
+	p2SString			jumpFX;
+	p2SString			deathFX;
+	p2SString			landFX;
+	p2SString			tranformationFX;
 	fPoint				temp;
 	SDL_Texture*		graphics = nullptr;
 };
