@@ -4,6 +4,8 @@
 #include "p2Defs.h"
 #include "p2Log.h"
 
+#include "Brofiler/Brofiler/Brofiler.h"
+
 #include "j1Window.h"
 #include "j1Input.h"
 #include "j1Render.h"
@@ -107,6 +109,7 @@ bool j1App::Awake()
 // Called before the first frame
 bool j1App::Start()
 {
+	BROFILER_CATEGORY("Awake", Profiler::Color::MediumSpringGreen);
 	bool ret = true;
 	p2List_item<j1Module*>* item;
 	item = modules.start;
@@ -123,6 +126,7 @@ bool j1App::Start()
 // Called each loop iteration
 bool j1App::Update()
 {
+	BROFILER_CATEGORY("Update", Profiler::Color::DeepSkyBlue);
 	bool ret = true;
 	PrepareUpdate();
 
@@ -175,6 +179,7 @@ void j1App::FinishUpdate()
 // Call modules before each loop iteration
 bool j1App::PreUpdate()
 {
+	BROFILER_CATEGORY("PreUpdate", Profiler::Color::Aqua);
 	bool ret = true;
 	p2List_item<j1Module*>* item;
 	item = modules.start;
@@ -219,6 +224,7 @@ bool j1App::DoUpdate()
 // Call modules after each loop iteration
 bool j1App::PostUpdate()
 {
+	BROFILER_CATEGORY("PostUpdate", Profiler::Color::MediumOrchid);
 	bool ret = true;
 	p2List_item<j1Module*>* item;
 	j1Module* pModule = NULL;

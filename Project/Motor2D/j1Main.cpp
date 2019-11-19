@@ -10,6 +10,12 @@
 #pragma comment( lib, "SDL/libx86/SDL2.lib" )
 #pragma comment( lib, "SDL/libx86/SDL2main.lib" )
 
+//Optick
+#include "Brofiler/Brofiler/Brofiler.h"
+#pragma comment( lib, "Brofiler/Brofiler/ProfilerCore32.lib")
+
+
+
 enum MainState
 {
 	CREATE = 1,
@@ -32,9 +38,10 @@ int main(int argc, char* args[])
 
 	while(state != EXIT)
 	{
+		BROFILER_FRAME("Main Thread");
+
 		switch(state)
 		{
-
 			// Allocate the engine --------------------------------------------
 			case CREATE:
 			LOG("CREATION PHASE ===============================");
