@@ -40,10 +40,13 @@ struct PlayerData
 	int					xDirection;
 	int                 map;
 	int                 savedmap;
+	int					dashForce;
 	iPoint				jumpSpeed;
 	iPoint				acceleration;
 	iPoint				maxSpeed;
+	iPoint				iMaxSpeed;
 	iPoint				speed;
+	iPoint				iSpeed;
 	iPoint				position;
 	iPoint              initPosition;
 	iPoint				offSet;
@@ -80,6 +83,8 @@ public:
 
 	void DoubleJump();
 
+	void Dash();
+
 	void MirrorSprite();
 
 	void AnimChange();
@@ -93,6 +98,8 @@ public:
 	void ArrivesFloor();
 
 	void PlayerMov();
+
+	void ResetPlayer();
 
 	void OnCollision(Collider* c1, Collider* c2);
 
