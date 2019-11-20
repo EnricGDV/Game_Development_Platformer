@@ -186,6 +186,11 @@ if (temp == "angel_falling_M")
 	Player.collider = App->collision->AddCollider({ config.child("position").attribute("x").as_int(), config.child("position").attribute("y").as_int(), config.child("col").attribute("w").as_int(), config.child("col").attribute("h").as_int() }, COLLIDER_PLAYER, this);
 	Player.colInit = { config.child("position").attribute("x").as_int(), config.child("position").attribute("y").as_int(), config.child("col").attribute("w").as_int(), config.child("col").attribute("h").as_int() };
 
+	jumpFX = config.child("jumpFX").attribute("source").as_string();
+	deathFX = config.child("deathFX").attribute("source").as_string();
+	landFX = config.child("landFX").attribute("source").as_string();
+	tranformationFX = config.child("transformationFX").attribute("source").as_string();
+
 	Player.map = config.child("map").attribute("value").as_int();
 
 	return ret;
@@ -206,6 +211,11 @@ bool j1Player::Start()
 	Player.isJumping = false;
 	Player.canDash = false;
 	Player.canDJump = true;
+
+	App->audio->LoadFx(jumpFX.GetString());
+	App->audio->LoadFx(deathFX.GetString());
+	App->audio->LoadFx(landFX.GetString());
+	App->audio->LoadFx(tranformationFX.GetString());
 
 	Player.iMaxSpeed = Player.maxSpeed;
 	Player.iSpeed = Player.speed;
@@ -262,6 +272,7 @@ bool j1Player::Update(float dt)
 
 		if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN && Player.onFloor)
 		{
+			App->audio->PlayFx(3,1);
 			Player.isJumping = true;
 			Player.maxSpeed.x += Player.jumpSpeed.x;
 			Player.speed.x = Player.jumpSpeed.x*Player.xDirection;

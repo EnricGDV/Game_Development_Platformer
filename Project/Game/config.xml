@@ -27,7 +27,22 @@
     <folder>maps/</folder>
   </map>
 
+  <audio>
+    <music>
+      <folder>audio/music/</folder>
+      <musicVolumeModifier value="0.3" />
+    </music>
+    <sfx>
+      <folder>audio/fx/</folder>
+      <sfxVolumeModifier value="1" />
+    </sfx>
+  </audio>
+
   <player>
+    <jumpFX source="Jump.wav"/>
+    <deathFX source="Die.wav"/>
+    <landFX source="Land.wav"/>
+    <tranformationFX source="Transformation.wav"/>
     <acceleration x="1" y="1"/>
     <jumpSpeed x="1" y="22"/>
     <initPos x ="120" y="2150"/>

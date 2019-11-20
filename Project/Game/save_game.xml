@@ -13,7 +13,7 @@
 		<onFloor value="true" />
 		<map value="0" />
 	</player>
-	<:anonymous />
+	<anonymous />
 	<renderer>
 		<camera x="305" y="-1792" />
 	</renderer>
