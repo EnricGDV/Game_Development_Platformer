@@ -69,6 +69,9 @@
   <image source="Parallax.png" width="3420" height="3000"/>
  </tileset>
  <layer name="Parallax2" width="300" height="80">
+  <properties>
+   <property name="Speed" type="int" value="1"/>
+  </properties>
   <data>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -24073,6 +24076,9 @@
   </data>
  </layer>
  <layer name="Parallax1" width="300" height="80">
+  <properties>
+   <property name="Speed" type="int" value="4"/>
+  </properties>
   <data>
    <tile gid="0"/>
    <tile gid="0"/>
